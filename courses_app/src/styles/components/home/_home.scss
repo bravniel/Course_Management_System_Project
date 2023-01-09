@@ -1,0 +1,35 @@
+.home {
+    width: 100%;
+    height: calc(100vh - 4rem);
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    div{
+        height: 10rem;
+        width: 6rem;
+    }
+}
+
+.request-container{
+    border: 2px solid $myBlue;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: $myBlue;
+    padding: 0.5rem;
+    font-weight: 600;
+    .svg{
+        width: 100%;
+        height: 100%;
+    }
+    :hover{
+        cursor: pointer;
+        color: $myDarkBlue;
+    }
+}

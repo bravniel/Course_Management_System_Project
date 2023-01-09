@@ -1,0 +1,152 @@
+.rooms {
+    width: 80%;
+    min-height: calc(100vh - 4rem);
+    margin: 4rem auto 0;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    padding-top: 1rem;
+
+    h3 {
+        text-align: center;
+        color: $myBlue;
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+}
+
+.rooms__section {
+    padding: 1rem;
+}
+
+.rooms__section-delete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    select {
+        padding: 0.5rem;
+        border-radius: 5px;
+        width: 80%;
+        border: 1px solid $myBlue;
+        outline: none;
+        margin: 0.5rem 0;
+        color: $myBlue;
+
+        option {
+            padding: 0.5rem 0;
+            color: $myDarkBlue;
+        }
+    }
+
+    button {
+        padding: 0.5rem;
+            border-radius: 5px;
+            color: white;
+            background: $myRed;
+            border: none;
+            width: 80%;
+            display: block;
+            margin-top: 1rem;
+        
+            &:hover {
+                cursor: pointer;
+                background: rgb(140, 0, 0);
+            }
+        
+            &:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+            }
+    }
+}
+
+.room {
+    margin: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+
+    &:hover {
+        background: #ccc;
+    }
+}
+
+.rooms__input-new {
+    padding: 0.5rem;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid $myBlue;
+    outline: none;
+    margin-bottom: 1rem;
+}
+.rooms__input-invalid-new{
+padding: 0.5rem;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid $myRed;
+    outline: none;
+    margin-bottom: 1rem;
+}
+
+.rooms__button-new {
+    padding: 0.5rem;
+    border-radius: 5px;
+    color: white;
+    background: $myBlue;
+    border: none;
+    width: 100%;
+    display: block;
+    margin-top: 1rem;
+
+    &:hover {
+        cursor: pointer;
+        background: $myLightBlue;
+    }
+    &:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+    }
+}
+
+.courses__schedule-container {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.courses__day-container {
+    display: flex;
+    width: 100%;
+    gap: 0.5rem;
+    input{
+        margin: 0;
+    }
+}
+
+.courses__hours-container {
+    padding: 0.5rem;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid $myBlue;
+    outline: none;
+    margin-bottom: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.courses__input-time {
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid $myBlue;
+    outline: none;
+    margin-bottom: 0.5rem;
+}
+
+.course-schedule{
+    margin-left: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}

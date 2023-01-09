@@ -1,0 +1,15 @@
+.chatroom__main {
+    width: 100%;
+    height: calc(100vh - 4rem);
+    display: grid;
+        grid-template-rows: auto 4rem;
+
+    h3 {
+        padding: 0 1rem;
+    }
+}
+
+.chatroom__main__messages {
+    overflow: auto;
+    height: calc(100vh - 8rem);
+}

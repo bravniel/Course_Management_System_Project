@@ -1,0 +1,48 @@
+.message {
+    margin: 1rem;
+    background: $myLightGray;
+    border: 2px solid $myBlue;
+    border-radius: 5px;
+    width: 80%;
+    position: relative;
+}
+
+.username {
+    font-weight: 700;
+    margin: 1rem;
+}
+
+.content {
+    margin: 1rem;
+}
+
+.my-message {
+    @extend .message;
+    background: $myDarkGray;
+}
+
+.delete-message {
+    font-weight: 700;
+    position: absolute;
+    top: 0;
+    right: 0.5rem;
+
+    &:hover {
+        color: white;
+        cursor: pointer;
+    }
+}
+
+.new-message {
+    @extend .message;
+    background: white;
+}
+
+.add-message {
+    @extend .delete-message;
+
+    &:hover {
+        color: $myLightGray;
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,24 @@
+.message-input {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 80% auto;
+
+    input {
+        margin: 1rem;
+        padding: 0.5rem;
+    }
+
+    button {
+        margin: 1rem;
+        padding: 0.5rem;
+        color: white;
+        background: $myBlue;
+        border: none;
+        border-radius: 5px;
+
+        &:hover {
+            background: $myLightBlue;
+            cursor: pointer;
+        }
+    }
+}

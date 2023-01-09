@@ -1,0 +1,194 @@
+.login-page {
+    width: 100%;
+    height: calc(100vh - 4rem);
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-page__form {
+    width: 40%;
+    border: 2px solid $myBlue;
+    border-radius: 5px;
+    margin: 2rem;
+    padding: 1rem;
+}
+
+.login-form {
+    h3 {
+        text-align: center;
+        color: $myBlue;
+    }
+
+    input {
+        display: block;
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 1rem;
+        border-radius: 5px;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    button {
+        display: block;
+        padding: 0.5rem;
+        background: $myBlue;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    }
+
+    select {
+        display: block;
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 1rem;
+        border-radius: 5px;
+        border: 1px solid $myBlue;
+        outline: none;
+    }
+}
+.input-valid {
+    border: 1px solid $myBlue;
+}
+.input-invalid {
+    border: 1px solid $myRed;
+}
+
+.invalid-message {
+    color: $myRed;
+    font-size: 0.75rem;
+}
+
+.login-form__nav {
+    padding-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+
+    div {
+        font-size: 0.75rem;
+        align-self: flex-end;
+        text-decoration: underline;
+        color: $myBlue;
+
+        &:hover {
+            color: $myLightBlue;
+            cursor: pointer;
+        }
+    }
+}
+
+.error-message {
+    color: $myRed;
+    background: #ccc;
+    border-radius: 5px;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.radio-choice_btn{
+    display: flex;
+    flex-direction: column;
+    align-items: self-start;
+    margin-top: 1rem;
+    color: $myBlue;
+
+    div{
+        display: flex;
+        label{
+            margin-left: 0.5rem;
+        }
+    }
+    input[type='radio']{
+        margin: 0;
+        padding: 0;
+        &:hover {
+            cursor: pointer;
+        }
+        &:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        &:checked {
+            accent-color: $myBlue;
+        }
+    }
+}
+
+.disabled{
+    color: #ccc;
+    cursor: not-allowed;
+}
+.undisabled{
+    color: $myBlue;
+    cursor: pointer;
+}
+
+.close-modal_btn{
+    display: flex;
+    justify-content: end;
+}
+
+
+.add-form {
+    h3 {
+        text-align: center;
+        color: $myBlue;
+    }
+
+    input {
+        display: block;
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border-radius: 5px;
+        &:focus {
+            outline: none;
+        }
+    }
+
+    button {
+        display: block;
+        padding: 0.5rem;
+        background: $myBlue;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    }
+
+    select {
+        display: block;
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 1rem;
+        border-radius: 5px;
+        border: 1px solid $myBlue;
+        outline: none;
+    }
+}
+
+
+
+@media (min-width:600px) {
+    .radio-choice_btn {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

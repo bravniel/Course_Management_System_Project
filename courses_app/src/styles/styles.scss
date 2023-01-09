@@ -1,0 +1,15 @@
+@import './base/base';
+@import './base/settings';
+@import './components/main/header';
+@import "./components/main/footer";
+@import "./components/login/login";
+@import "./components/chatroom/chatroom";
+@import "./components/chatroom/chatroomUsers";
+@import "./components/chatroom/chatroomMain";
+@import "./components/chatroom/message";
+@import "./components/chatroom/AddMessage";
+@import "./components/chatroom/searchUsers";
+@import "./components/chatroom/privateMessage";
+@import "./components/home/home";
+@import "./components/main/Loader";
+@import "./components/courses/courses";

@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Maze&display=swap');
+.header {
+    width: 100%;
+    height: 4rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: $myBlue;
+    display: flex;
+    align-items: center;
+}
+
+.header__nav {
+    width: 70%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    a {
+        @extend %a-nav;
+    }
+
+        .home-nav-link {
+            font-weight: 700;
+        }
+
+    .header__active-link {
+        color: $myYellow;
+        
+    }
+
+}
+.home-nav {
+    display: none;
+}
+
+.header__nav_logo_subtitle-small,
+    .header__nav_logo_subtitle-full {
+        font-family: 'Rubik Maze', cursive;
+        font-size: 3rem;
+        span{
+            color: #F2F2F2;
+        }
+    }
+
+    .header__nav_logo_subtitle-full {
+        display: none;
+    }
+.header__logout-nav {
+    @extend %a-nav;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.nav-link{
+    display: none;
+}
+
+@media (min-width:680px) {
+.home-nav {
+    display: inline-block;
+        font-weight: 700;
+    }
+}
+
+@media (min-width:1150px) {
+    .header__nav_logo_subtitle-small {
+        display: none;
+    }
+
+    .header__nav_logo_subtitle-full {
+        display: block;
+        font-family: 'Rubik Maze', cursive;
+        font-size: 3rem;
+        span{
+            color: #F2F2F2;
+        }
+    }
+}
