@@ -5,7 +5,7 @@ import Course from "./Course";
 
 const CourseLoader = () => {
   const {id:roomId} = useParams();
-    console.log("roomId: " + roomId);
+
   return (
     <CourseContextProvider roomId={roomId}>
           <Course />

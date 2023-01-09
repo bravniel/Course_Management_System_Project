@@ -63,7 +63,7 @@ router.patch("/students", auth, async (req, res) => {
         user.password = updateUser.password;
       }
       await user.save();
-      res.send({ user });
+      res.send( user );
     } else {
       return res.status(401).send({ Error: "not authenticate" });
     }
@@ -175,7 +175,7 @@ router.patch("/students/courses/:id", auth, async (req, res) => {
         if (
           thisCourse.statuses[i].classDate.getTime() === classDate.getTime()
         ) {
-          if (presence) {
+          if (presence == true) {
             thisCourse.statuses[i].presence = true;
             thisCourse.statuses[i].absenceReason = "";
           } else {

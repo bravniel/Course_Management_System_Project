@@ -54,7 +54,7 @@ const StudentCourses = () => {
         console.log("currentDate: "+currentDate.getTime());
         console.log("yesterday: "+yesterday.getTime());
         console.log("date: "+date.getTime());
-        return date.getTime() >= currentDate.getTime() || date.getTime() <= yesterday.getTime();
+        return date.getTime() >= currentDate.getTime();
     }
     
   return (
@@ -76,18 +76,18 @@ const StudentCourses = () => {
                       Every {day.day}, {day.hours.startHour} - {day.hours.startHour}
                 </div>
               ))}
-              {courseInfo.statuses.map((status, i) => (
+              <div className="statuses">{courseInfo.statuses.map((status, i) => (
                   <div key={i} className={i % 2 == 0 ? "my-message" : "message"}>
                       <p>
-                          <u>{status.classDate.substring(0, 10)}: </u>
-                          <span className={!!status.presence ? "attend" : "absent"}>{status.presence ? "attend" : "absent"}</span>.
-                          <button className="rooms__button-new" disabled={isButtonDisabled(status.classDate)} onClick={() => {
+                    <u>{status.classDate.substring(0, 10)}:</u>
+                    {new Date(status.classDate).getTime() > currentDate.getTime()? (<span> Future course, not yet held</span>) : (<span className={!!status.presence ? "attend" : "absent"}>{status.presence ? " Attend" : " Absent"}</span>)}.
+                          {new Date(status.classDate).getTime() < currentDate.getTime() && (<button className="rooms__button-new" disabled={isButtonDisabled(status.classDate)} onClick={() => {
                                 setClassStatus(status);
                                 setEditStudentClassStatusForm(true);
-            }}>Change</button>
+                          }}>Change</button>)}
                       </p>
                   </div>
-            ))}
+            ))}</div>
       </div>)}
           {!isRoomLoaded && <Loader />}
           {!!editStudentClassStatusForm && (

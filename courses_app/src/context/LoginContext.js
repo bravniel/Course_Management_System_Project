@@ -42,8 +42,9 @@ const LoginContextProvider = (props) => {
     }
   }
   useEffect(() => {
+    setIsResponse(false);
     initAuthUser();
-  }, [userData]);
+  }, [userData, userData.user]);
 
   return (
     <LoginContext.Provider value={{ userData, dispatchUserData, isResponse }}>

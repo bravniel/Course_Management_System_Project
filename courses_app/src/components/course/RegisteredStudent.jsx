@@ -7,8 +7,6 @@ import { LoginContext } from "../../context/LoginContext";
 const RegisteredStudent = ({ registeredStudent, index }) => {
   const { userData } = useContext(LoginContext);
   const { courseState, courseDispatch } = useContext(CourseContext);
-    console.log("registeredStudent");
-    console.log(registeredStudent);
   const onClickDelete = () => {
     removeStudentFromCourse(
         userData.token,

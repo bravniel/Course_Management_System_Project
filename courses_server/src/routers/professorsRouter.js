@@ -82,6 +82,12 @@ router.post("/professors", async (req, res) => {
 router.patch("/professors", auth, async (req, res) => {
   const professor = req.user;
   const updateProfessor = req.body;
+  // const validateLength=(property,error)=>{
+  //     if (updateProfessor?.[property]?.length < 2)
+  //       return res.status(400).send({ Error: error });
+  //     professor[property] = updateProfessor[property];
+  // }
+  // validateLength("firstName","First name is too short");
   try {
     if (req.isProfessor) {
       if (updateProfessor.firstName) {
@@ -124,7 +130,7 @@ router.patch("/professors", auth, async (req, res) => {
         professor.password = updateProfessor.password;
       }
       await professor.save();
-      res.send({ professor });
+      res.send(professor);
     } else {
       return res.status(401).send({ Error: "not authenticate" });
     }
@@ -250,6 +256,7 @@ router.post("/students/courses/:id", auth, async (req, res) => {
   const courseName = req.params.id;
   const studentEmail = req.body.studentEmail;
   try {
+    // if(!req.isProfessor) return 
     if (req.isProfessor) {
       const student = await Student.findOne({ email: studentEmail });
       const course = await Course.findOne({ name: courseName });

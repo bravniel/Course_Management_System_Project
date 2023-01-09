@@ -11,8 +11,6 @@ const CourseUsers = (props) => {
     const navigate = useNavigate();
     const { userData } = useContext(LoginContext);
     const { courseState } = useContext(CourseContext);
-    console.log("courseState:");
-    console.log(courseState);
     
 const onClickDeleteCourse = () => {
    deleteCourse(userData.token, courseState.name).then(

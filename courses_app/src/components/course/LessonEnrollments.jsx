@@ -8,8 +8,7 @@ const LessonEnrollments = ({ date, lessonStudentsEnrollments, closeLessonEnrollm
   const { courseState } = useContext(CourseContext);  
   const dateDay = new Date(date);
   const thisDateSchedule = courseState.schedule.filter(el => el.day === days[dateDay.getDay()]);
-  console.log("lessonStudentsEnrollments");
-  console.log(lessonStudentsEnrollments);
+  const currentDate = new Date(); 
   return (
     <div className="private-message">
       <div className="private-message__body">
@@ -25,7 +24,8 @@ const LessonEnrollments = ({ date, lessonStudentsEnrollments, closeLessonEnrollm
       {lessonStudentsEnrollments.map((lessonStudentEnrollment, i) => (
         <div key={i} className={i % 2 == 0 ? "my-message" : "message"}>
           <p>
-            <u>{lessonStudentEnrollment.student.firstName} {lessonStudentEnrollment.student.lastName}:</u> <span className={!!lessonStudentEnrollment.statuses[0].presence ? "attend" : "absent"}>{!!lessonStudentEnrollment.statuses[0].presence ? "Attend" : "Absent"}</span>.<br />{lessonStudentEnrollment.statuses[0].absenceReason ? `Absence Reason: ${lessonStudentEnrollment.statuses[0].absenceReason}.` : ""}
+            <u>{lessonStudentEnrollment.student.firstName} {lessonStudentEnrollment.student.lastName}:</u> {dateDay.getTime() > currentDate.getTime() ? (<span>Future course, not yet held</span>) : (<span className={!!lessonStudentEnrollment.statuses[0].presence ? "attend" : "absent"}>{!!lessonStudentEnrollment.statuses[0].presence ? "Attend" : "Absent"}</span>)}.<br />
+            {dateDay.getTime() < currentDate.getTime() && (lessonStudentEnrollment.statuses[0].absenceReason ? `Absence Reason: ${lessonStudentEnrollment.statuses[0].absenceReason}.` : "")}
           </p>
         </div>
           ))}

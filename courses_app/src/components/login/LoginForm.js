@@ -54,9 +54,9 @@ const LoginForm = (props) => {
         navigate("/home");
       },
       (err) => {
-        if (err.message === "Request failed with status code 401") {
+        // if (err.message === "Request failed with status code 401") {
           setErrorMessage("Email or password are invalid.");
-        }
+        // }
       }
     );
   };

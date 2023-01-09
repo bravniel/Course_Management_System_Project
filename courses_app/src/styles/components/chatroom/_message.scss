@@ -5,6 +5,24 @@
     border-radius: 5px;
     width: 80%;
     position: relative;
+
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow-wrap: break-word;
+    p{
+        margin: 0;
+    }
+}
+
+.statuses{
+ display: flex;
+//  flex-direction: column;
+//  justify-content: center;
+//  align-items: center;
+flex-wrap: wrap;
 }
 
 .username {

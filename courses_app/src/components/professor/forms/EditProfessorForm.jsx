@@ -7,7 +7,7 @@ import { LoginContext } from "../../../context/LoginContext";
 
 
 const EditProffesorForm = () => {
-    const { userData, dispatchUserData } = useContext(LoginContext);
+    const { userData, dispatchUserData, isResponse } = useContext(LoginContext);
     console.log("edit student")
     console.log(userData)
     const phoneRegex = /^ [0][5][0 | 2 | 3 | 4 | 5 | 9]{ 1}[-]{ 0, 1 } [0 - 9]{ 7 } $ /;
@@ -178,9 +178,8 @@ const [repeatPassword, setRepeatPassword] = useState("");
     editProfessorInfo(userData.token,{firstName,lastName,address,phoneNumber,email, password,repeatPassword}).then(
       (newUserData) => {
         dispatchUserData(loginAction({user:newUserData,isProfessor:userData.isProfessor,token:userData.token}));
-         navigate("/home");
-        // props.closeForm();
-        alert("professor data updated sucsesfuly")
+        alert("professor data updated sucsesfuly");
+        navigate("/home");
       },
         (err) => {
             console.log("err:")
