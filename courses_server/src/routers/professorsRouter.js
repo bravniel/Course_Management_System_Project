@@ -13,15 +13,12 @@ const router = express.Router();
 router.post("/professors/logout", auth, async (req, res) => {
   const professor = req.user;
   try {
-    if (req.isProfessor) {
+    if (!req.isProfessor) { return res.status(401).send({ Error: "not authenticate" }); }
       professor.tokens = professor.tokens.filter(
         (tokenDoc) => tokenDoc.token !== req.token
       );
       await professor.save();
       res.send("logout succsessfuly");
-    } else {
-      return res.status(401).send({ Error: "not authenticate" });
-    }
   } catch (e) {
     res.status(500).send({ Error: e.message });
   }
@@ -89,7 +86,7 @@ router.patch("/professors", auth, async (req, res) => {
   // }
   // validateLength("firstName","First name is too short");
   try {
-    if (req.isProfessor) {
+    if (!req.isProfessor) { return res.status(401).send({ Error: "not authenticate" }); }
       if (updateProfessor.firstName) {
         if (updateProfessor.firstName.length < 2)
           return res.status(400).send({ Error: "First name is too short" });
@@ -131,9 +128,6 @@ router.patch("/professors", auth, async (req, res) => {
       }
       await professor.save();
       res.send(professor);
-    } else {
-      return res.status(401).send({ Error: "not authenticate" });
-    }
   } catch (e) {
     res.status(500).send({ Error: e.message });
   }
@@ -146,12 +140,9 @@ router.patch("/professors", auth, async (req, res) => {
 router.get("/students", auth, async (req, res) => {
   // all students
   try {
-    if (req.isProfessor) {
+    if (!req.isProfessor) { return res.status(401).send({ Error: "not authenticate" }); }
       const allStudents = await Student.find();
       res.send(allStudents);
-    } else {
-      return res.status(401).send({ Error: "not authenticate" });
-    }
   } catch (e) {
     res.status(500).send({ Error: e.message });
   }
@@ -161,7 +152,7 @@ router.post("/students", auth, async (req, res) => {
   // create new student
   const info = req.body;
   try {
-    if (req.isProfessor) {
+    if (!req.isProfessor) { return res.status(401).send({ Error: "not authenticate" }); }
       const user = new Student(info);
       if (!info.firstName)
         return res.status(400).send({ Error: "First Name required" });
@@ -186,9 +177,6 @@ router.post("/students", auth, async (req, res) => {
       // res.send({ user, token, name: user.name });
       const students = await Student.find();
       res.send(students);
-    } else {
-      return res.status(401).send({ Error: "not authenticate" });
-    }
   } catch (e) {
     res.status(500).send({ Error: e.message });
   }
@@ -203,7 +191,7 @@ router.delete("/students/:id", auth, async (req, res) => {
 
   const studentEmail = req.params.id;
   try {
-    if (req.isProfessor) {
+    if (!req.isProfessor) { return res.status(401).send({ Error: "not authenticate" }); }
       const student = await Student.findOne({ email: studentEmail });
       if (!student) {
         //throw new Error();
@@ -214,37 +202,23 @@ router.delete("/students/:id", auth, async (req, res) => {
       // Remove data from the first collection
       await Enrollment.deleteMany({ student: student._id }, { session });
 
-      // app.close(() => {
-      //   console.log("server has been closed!!!");
-      // });
-
       // Remove data from the second collection
       await student.remove({ session });
-
-      // //process.exit(0);
-      // app.close(() => {
-      //   console.log("server has been closed!!!");
-      // });
 
       // Commit the transaction
       await session.commitTransaction();
       const students = await Student.find();
+
       // "Student & its registrations to courses has been successfully deleted";
       res.send(students);
-    } else {
-      return res.status(401).send({ Error: "not authenticate" });
-    }
   } catch (e) {
-    // If an error occurred, abort the transaction and
-    // throw the error
+    // If an error occurred, abort the transaction and throw the error
     await session.abortTransaction();
     //res.status(500).send({ Error: e.message });
-    res
-      .status(500)
-      .send({
-        Error: e.message,
-        Message: "Server connection failed, try again later!",
-      });
+    res.status(500).send({
+      Error: e.message,
+      Message: "Server connection failed, try again later!",
+    });
   } finally {
     // End the session
     session.endSession();
@@ -256,8 +230,7 @@ router.post("/students/courses/:id", auth, async (req, res) => {
   const courseName = req.params.id;
   const studentEmail = req.body.studentEmail;
   try {
-    // if(!req.isProfessor) return 
-    if (req.isProfessor) {
+    if (!req.isProfessor) { return res.status(401).send({ Error: "not authenticate" }); }
       const student = await Student.findOne({ email: studentEmail });
       const course = await Course.findOne({ name: courseName });
       const isDoubleEnrollment = await Enrollment.findOne({
@@ -296,9 +269,6 @@ router.post("/students/courses/:id", auth, async (req, res) => {
         { student: 1 }
       ).populate("student");
       res.send(thisCourseStudents);
-    } else {
-      return res.status(401).send({ Error: "not authenticate" });
-    }
   } catch (e) {
     res.status(500).send({ Error: e.message });
   }
@@ -309,7 +279,7 @@ router.delete("/students/courses/:id", auth, async (req, res) => {
   const courseName = req.params.id;
   const studentEmail = req.body.studentEmail;
   try {
-    if (req.isProfessor) {
+    if (!req.isProfessor) { return res.status(401).send({ Error: "not authenticate" }); }
       const student = await Student.findOne({ email: studentEmail });
       const course = await Course.findOne({ name: courseName });
       const enrollment = await Enrollment.deleteMany({
@@ -326,43 +296,6 @@ router.delete("/students/courses/:id", auth, async (req, res) => {
         { student: 1 }
       ).populate("student");
       res.send(thisCourseStudents);
-    } else {
-      return res.status(401).send({ Error: "not authenticate" });
-    }
-  } catch (e) {
-    res.status(500).send({ Error: e.message });
-  }
-});
-
-router.get("/professor/students/courses/:id", auth, async (req, res) => {
-  // all students that not!! registered for the course
-  const courseName = req.params.id;
-  try {
-    if (req.isProfessor) {
-      const allStudents = await Student.find();
-      const course = await Course.findOne({ name: courseName });
-      const thisCourseStudents = await Enrollment.find(
-        {
-          course: course._id,
-        },
-        { student: 1, _id: 0 }
-      ).populate("student");
-      let allNotRegisteredStudents = [...allStudents];
-      allStudents.forEach((student, i) => {
-        thisCourseStudents.forEach((existStudent) => {
-          // if (
-          //   student.email == existStudent.student.email
-          // ) {
-          allNotRegisteredStudents = allNotRegisteredStudents.filter(
-            (student) => student.email !== existStudent.student.email
-          );
-          // }
-        });
-      });
-      res.send(allNotRegisteredStudents);
-    } else {
-      return res.status(401).send({ Error: "not authenticate" });
-    }
   } catch (e) {
     res.status(500).send({ Error: e.message });
   }

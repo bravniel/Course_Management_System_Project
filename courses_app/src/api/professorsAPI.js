@@ -100,13 +100,6 @@ export const getCourseInfo = async (token, courseName) => {
   return course.data;
 };
 
-export const getAllNotRegisteredCourseStudents = async (token, courseName) => {
-  const routeUrl = url + "professor/students/courses/" + courseName;
-  const headers = { Authorization: "Bearer " + token };
-  const course = await axios.get(routeUrl, { headers });
-  return course.data;
-};
-
 export const getStudentsClassAttendanceStatusesByDate = async (
   token,
   courseName,

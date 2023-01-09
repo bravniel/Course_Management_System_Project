@@ -21,14 +21,8 @@ const courseReducer = (courseState, action) => {
         schedule: action.courseData.course.schedule,
         dates: action.courseData.course.allDates,
         registeredStudents: action.courseData.thisCourseStudents,
-        newStudents: [],
+        newStudents: action.courseData.allNotRegisteredStudents,
         isCourseExist: false,
-      };
-    case "INIT_NOT":
-      return {
-        ...courseState,
-        newStudents: action.courseData,
-        isCourseExist: true,
       };
     case "ADD_STUDENT":
       return {

@@ -13,11 +13,6 @@ export const initCourseAction = (courseData) => ({
   courseData,
 });
 
-export const initNotCourseStudentsAction = (courseData) => ({
-  type: "INIT_NOT",
-  courseData,
-});
-
 export const removeCourseAction = (courseId) => ({
   type: "REMOVE",
   courseId,

@@ -8,6 +8,9 @@ const router = new express.Router();
 
 router.get("/courses", auth, async (req, res) => {
   try {
+    if (!req.isProfessor) {
+      return res.status(401).send({ Error: "not authenticate" });
+    }
     const courses = await Course.find(
       !req.query.searchByProfessor
         ? {}
@@ -25,6 +28,9 @@ router.get("/courses", auth, async (req, res) => {
 router.get("/courses/:id", auth, async (req, res) => {
   const courseName = req.params.id;
   try {
+    if (!req.isProfessor) {
+      return res.status(401).send({ Error: "not authenticate" });
+    }
     const course = await Course.findOne({ name: courseName }).populate(
       "professor"
     );
@@ -36,7 +42,18 @@ router.get("/courses/:id", auth, async (req, res) => {
       },
       { student: 1 }
     ).populate("student");
-    res.send({ course, thisCourseStudents });
+
+    // all students that not registered for the course !
+    let allNotRegisteredStudents = [...allStudents];
+    allStudents.forEach((student, i) => {
+      thisCourseStudents.forEach((existStudent) => {
+        allNotRegisteredStudents = allNotRegisteredStudents.filter(
+          (student) => student.email !== existStudent.student.email
+        );
+      });
+    });
+
+    res.send({ course, thisCourseStudents, allNotRegisteredStudents });
   } catch (e) {
     res.status(500).send({ Error: e.message });
   }
@@ -46,10 +63,10 @@ router.get("/courses/:id/:date", auth, async (req, res) => {
   const courseName = req.params.id;
   const courseDate = req.params.date;
   try {
+    if (!req.isProfessor) {
+      return res.status(401).send({ Error: "not authenticate" });
+    }
     const courseDateNew = new Date(courseDate);
-    // const yyyy = today.getFullYear();
-    // let mm = today.getMonth() + 1; // Months start at 0!
-    // let dd = today.getDate();
     const course = await Course.findOne({ name: courseName });
     if (!course || course.length === 0)
       return res.status(400).send({ Error: "Course not found" });
@@ -65,20 +82,6 @@ router.get("/courses/:id/:date", auth, async (req, res) => {
       .populate("student");
     if (!thisCourseEnrollments || thisCourseEnrollments.length === 0)
       return res.status(400).send({ Error: "Enrollments not found" });
-    // let thisCourseStatuses = [];
-    // thisCourseEnrollments.forEach((enrollment) => {
-    //   enrollment.statuses.forEach((status) => {
-    //     if (status.classDate.getTime() === courseDateNew.getTime()) {
-    //       let studentStatus = {
-    //         student:
-    //           enrollment.student.firstName + " " + enrollment.student.lastName,
-    //         presence: status.presence,
-    //         absenceReason: status.absenceReason,
-    //       };
-    //       thisCourseStatuses.push(studentStatus);
-    //     }
-    //   })
-    // });
     res.send(thisCourseEnrollments);
   } catch (e) {
     res.status(500).send({ Error: e.message });
@@ -88,6 +91,9 @@ router.get("/courses/:id/:date", auth, async (req, res) => {
 router.post("/courses", auth, async (req, res) => {
   const info = req.body;
   try {
+    if (!req.isProfessor) {
+      return res.status(401).send({ Error: "not authenticate" });
+    }
     const course = new Course(info);
     if (!info.name) return res.status(400).send({ Error: "Name required" });
     const duplicateCourse = await Course.findOne({ name: info.name });
@@ -105,7 +111,6 @@ router.post("/courses", auth, async (req, res) => {
       return res.status(400).send({
         Error: "Invalid add course. Missing fields or fields too short",
       });
-
     const isHaveSchedule = info.schedule.every((date) => {
       date.day && date.hours && date.hours.startHour && date.hours.endHour;
     });
@@ -126,9 +131,11 @@ router.delete("/courses/:id", auth, async (req, res) => {
   // Start a transaction
   const session = await mongoose.startSession();
   session.startTransaction();
-
   const courseName = req.params.id;
   try {
+    if (!req.isProfessor) {
+      return res.status(401).send({ Error: "not authenticate" });
+    }
     const course = await Course.findOne({ name: courseName });
     if (!course) return res.status(400).send({ Error: "Course not found" });
     // Remove data from the first collection
@@ -139,8 +146,7 @@ router.delete("/courses/:id", auth, async (req, res) => {
     await session.commitTransaction();
     res.send("Course & its registrations has been successfully deleted");
   } catch (e) {
-    // If an error occurred, abort the transaction and
-    // throw the error
+    // If an error occurred, abort the transaction and throw the error
     await session.abortTransaction();
     //res.status(500).send({ Error: e.message });
     res.status(500).send({

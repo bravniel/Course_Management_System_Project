@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
-import { initCourseAction, initNotCourseStudentsAction } from "../actions/courseActions";
-import { getAllNotRegisteredCourseStudents, getCourseInfo } from "../api/professorsAPI";
+import { initCourseAction } from "../actions/courseActions";
+import { getCourseInfo } from "../api/professorsAPI";
 import courseReducer, { initialcourseState } from "../reducers/courseReduser";
 import { LoginContext } from "./LoginContext";
 
@@ -21,14 +21,6 @@ const CourseContextProvider = (props) => {
         (courseData) => {
           if (isComponentExist) {
             courseDispatch(initCourseAction(courseData));
-            getAllNotRegisteredCourseStudents(
-              userData.token,
-              props.roomId
-            ).then(
-              (courseData) => {
-                courseDispatch(initNotCourseStudentsAction(courseData));
-              },
-            );
           }
         },
         (err) => {
