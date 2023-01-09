@@ -48,7 +48,7 @@ const AppRouter = () => (
             <Route path="/student/home" element={<StudentHomePage />} />
             <Route path="/student/edit" element={<EditStudentForm />} />
             <Route path="/student/courses" element={<StudentCourses />} />
-            <Route path="/student/course/:id" element={<CourseLoader />} />
+            {/* <Route path="/student/course/:id" element={<CourseLoader />} /> */}
           </Route>
           
         </Route>

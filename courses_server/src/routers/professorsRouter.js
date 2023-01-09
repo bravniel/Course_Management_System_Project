@@ -327,7 +327,7 @@ router.delete("/students/courses/:id", auth, async (req, res) => {
   }
 });
 
-router.get("professor/students/courses/:id", auth, async (req, res) => {
+router.get("/professor/students/courses/:id", auth, async (req, res) => {
   // all students that not!! registered for the course
   const courseName = req.params.id;
   try {

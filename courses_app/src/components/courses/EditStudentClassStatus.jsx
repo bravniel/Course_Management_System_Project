@@ -36,9 +36,7 @@ const EditStudentClassStatus = ({ classStatus,courseName, closeEditStudentClassS
         </select>
               <textarea value={absenceReason} onChange={(event) => {
                   const newAbsenceReason = event.target.value.trim();
-                  if (newAbsenceReason.length > 0) {
                       setAbsenceReason(newAbsenceReason);
-                  }
         }}></textarea>
         <button onClick={updateStatus}>Send</button>
       </div>
