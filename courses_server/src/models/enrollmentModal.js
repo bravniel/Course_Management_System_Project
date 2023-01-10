@@ -3,20 +3,20 @@ const mongoose = require("mongoose");
 const enrollmentSchema = new mongoose.Schema({
   student: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    required: [true, "Student _id required"],
     ref: "Student",
   },
   course: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Course",
-    required: true,
+    required: [true, "Course _id required"],
   },
   statuses: [
     {
-      classDate: { type: Date, required: true },
+      classDate: { type: Date, required: [true, "Class Date required"] },
       presence: {
         type: Boolean,
-        required: true,
+        required: [true, "Presence required"],
         default: false,
       },
       absenceReason: {

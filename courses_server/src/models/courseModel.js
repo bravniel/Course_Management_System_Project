@@ -5,35 +5,42 @@ const courseSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      require: true,
+      required: [true, "Course Name required"],
       trim: true,
-      unique: true,
-      //minlength: 2
-      validate(name) {
-        if (name.length < 2) {
-          throw new Error("Course Name is too short");
-        }
-      },
+      unique: [true, "This Name exists in the system, Name is unique"],
+      minlength: [2, "Course Name is too short"],
     },
     professor: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: [true, "Professor _id required"],
       ref: "Professor",
     },
     startDate: {
       type: Date,
-      required: true,
+      required: [true, "Start Date required"],
     },
     endDate: {
       type: Date,
-      required: true,
+      required: [true, "End Date required"],
     },
     schedule: [
       {
-        day: { type: String, trim: true, required: true },
+        day: {
+          type: String,
+          trim: true,
+          required: [true, "Day required"],
+        },
         hours: {
-          startHour: { type: String, trim: true, required: true },
-          endHour: { type: String, trim: true, required: true },
+          startHour: {
+            type: String,
+            trim: true,
+            required: [true, "End Hour required"],
+          },
+          endHour: {
+            type: String,
+            trim: true,
+            required: [true, "End Hour required"],
+          },
         },
       },
     ],

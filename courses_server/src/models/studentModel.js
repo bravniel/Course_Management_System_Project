@@ -6,61 +6,45 @@ const jwt = require("jsonwebtoken");
 const studentSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: true,
+    required: [true, "First Name required"],
     trim: true,
-    //minlength: 2,
-    validate(firstName) {
-      if (firstName.length < 2) {
-        throw new Error("First name is too short");
-      }
-    },
+    minlength: [2, "First Name is too short"],
   },
   lastName: {
     type: String,
-    required: true,
+    required: [true, "Last Name required"],
     trim: true,
-    //minlength: 2,
-    validate(lastName) {
-      if (lastName.length < 2) {
-        throw new Error("Last name is too short");
-      }
-    },
+    minlength: [2, "Last Name is too short"],
   },
   birthDate: {
     type: Date,
-    required: true,
-    min: "1923-01-01",
-    max: "2007-01-01",
+    required: [true, "Birth Date required"],
+    min: ["1923-01-01", "Invalid age, too old"],
+    max: ["2007-01-01", "Invalid age, too young"],
   },
   address: {
     type: String,
-    required: true,
+    required: [true, "Address required"],
     trim: true,
-    lowercase: true,
-    //minlength: 2,
-    validate(address) {
-      if (address.length < 2) {
-        throw new Error("Address is too short");
-      }
-    },
+    minlength: [2, "Addres is too short"],
   },
-  // ^05\d([-]{0,1})\d{7}$
   phoneNumber: {
     type: String,
-    required: true,
+    required: [true, "Phone Number required"],
     trim: true,
     validate(phoneNumber) {
-      if (phoneNumber.length !== 10) {
-        throw new Error("Invalid phone number");
+      const phoneRegex = /^[0][5][0|2|3|4|5|9]{1}[-]{0,1}[0-9]{7}$/;
+      if (!phoneRegex.test(phoneNumber)) {
+        throw new Error("Invalid Phone number");
       }
     },
   },
   email: {
     type: String,
-    required: true,
+    required: [true, "Email required"],
     trim: true,
     lowercase: true,
-    unique: true,
+    unique: [true, "This Email exists in the system, Email is unique"],
     validate(email) {
       if (!validator.isEmail(email)) {
         throw new Error("Invalid email");
@@ -69,12 +53,15 @@ const studentSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: [true, "Password required"],
     trim: true,
-    //minlength: 6
     validate(password) {
-      if (password.length < 6) {
-        throw new Error("Password is too short");
+      const passwordRegex =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
+      if (!passwordRegex.test(password)) {
+        throw new Error(
+          "Invalid password. Must contain big and small letters, numbers and minimum length 6 characters"
+        );
       }
     },
   },
@@ -136,6 +123,3 @@ studentSchema.methods.toJSON = function () {
 const Student = mongoose.model("Student", studentSchema);
 
 module.exports = Student;
-
-// const phoneRegex =/^ [0][5][0 | 2 | 3 | 4 | 5 | 9]{ 1}[-]{ 0, 1 } [0 - 9]{ 7 } $ /;
-// const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;

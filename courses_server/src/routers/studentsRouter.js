@@ -25,37 +25,12 @@ router.patch("/students", auth, async (req, res) => {
     if (req.isProfessor) {
       return res.status(401).send({ Error: "not authenticate" });
     }
-    if (updateUser.firstName) {
-      if (updateUser.firstName.length < 2)
-        return res.status(400).send({ Error: "First name is too short" });
-      user.firstName = updateUser.firstName;
-    }
-    if (updateUser.lastName) {
-      if (updateUser.lastName.length < 2)
-        return res.status(400).send({ Error: "Last name is too short" });
-      user.lastName = updateUser.lastName;
-    }
-    if (updateUser.address) {
-      if (updateUser.address.length < 2)
-        return res.status(400).send({ Error: "Address is too short" });
-      user.address = updateUser.address;
-    }
-    if (updateUser.phoneNumber) {
-      if (updateUser.phoneNumber.length !== 10)
-        return res.status(400).send({ Error: "Invalid phone number" });
-      user.phoneNumber = updateUser.phoneNumber;
-    }
-    if (updateUser.email) {
-      const duplicateUser = await Student.findOne({
-        email: updateUser.email,
-      });
-      if (duplicateUser)
-        return res.status(400).send({ Error: "Duplicate user email" });
-      user.email = updateUser.email;
-    }
+    user.firstName = updateUser.firstName || user.firstName;
+    user.lastName = updateUser.lastName || user.lastName;
+    user.address = updateUser.address || user.address;
+    user.phoneNumber = updateUser.phoneNumber || user.phoneNumber;
+
     if (updateUser.password) {
-      if (updateUser.password.length < 6)
-        return res.status(400).send({ Error: "Password is too short" });
       if (!updateUser.repeatPassword)
         return res.status(400).send({ Error: "Repeat Password required!" });
       if (updateUser.repeatPassword !== updateUser.password)
@@ -64,10 +39,15 @@ router.patch("/students", auth, async (req, res) => {
           .send({ Error: "Password is not equals to Repeat Password" });
       user.password = updateUser.password;
     }
+
     await user.save();
     res.send(user);
   } catch (e) {
-    res.status(500).send({ Error: e.message });
+    e.name === "MongoError" && e.code === 11000
+      ? res
+          .status(500)
+          .send({ Error: "This Email exists in the system, Email is unique" })
+      : res.status(500).send({ Error: e.message });
   }
 });
 
