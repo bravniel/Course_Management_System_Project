@@ -11,25 +11,12 @@ const CourseDates = (props) => {
   const [lessonStudentsEnrollmentsForm, setLessonStudentsEnrollmentsForm] = useState(false);
   const [lessonStudentsEnrollments, setLessonStudentsEnrollments] = useState(null);
   const [date, setDate] = useState(null);
-
   const [isLessonStudentsEnrollmentsExist, setIsLessonStudentsEnrollmentsExist] = useState(false);
 
-    
   useEffect(() => {
     setCourseToDisplay([...courseState.dates]);
-    console.log(courseState);
   }, [courseState.dates]);
   
-  // const searchUsers = (searchValue) => {
-  //     const users = [...courseState.users];
-  //     setCourseToDisplay(
-  //       searchValue === ""
-  //         ? users
-  //         : users.filter((user) =>
-  //             user.username.toLowerCase().includes(searchValue)
-  //           )
-  //     );
-  //   };
     const closeLessonEnrollments = () => {
       setLessonStudentsEnrollmentsForm(false);
   };
@@ -44,13 +31,16 @@ const CourseDates = (props) => {
                 setLessonStudentsEnrollments(lessonStudentsEnrollments);
                 setLessonStudentsEnrollmentsForm(true);
               },
+              (err) => {
+                setLessonStudentsEnrollments(null);
+                setLessonStudentsEnrollmentsForm(true);
+              }
             );
   };
 
     return (
       <div className="chatroom__users">
         <h3>Dates</h3>
-        {/* <SearchUsers searchUsers={searchUsers} /> */}
         {courseToDisplay.map((date) => (
           <div
             className="user"

@@ -16,7 +16,7 @@ const CourseContextProvider = (props) => {
     );
 
     useEffect(() => {
-        let isComponentExist = true;
+      let isComponentExist = true;
       getCourseInfo(userData.token, props.roomId).then(
         (courseData) => {
           if (isComponentExist) {
@@ -29,11 +29,14 @@ const CourseContextProvider = (props) => {
           }
         }
       );
-        
-        return () => {
-          isComponentExist = false;
-        };
-    }, [props.roomId,userData.token]);
+
+      return () => {
+        isComponentExist = false;
+      };
+    }, [
+      props.roomId,
+      userData.token
+    ]);
 
   return (
     <CourseContext.Provider value={{ courseState, courseDispatch }}>

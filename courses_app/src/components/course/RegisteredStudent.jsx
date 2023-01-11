@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { initNotCourseStudentsAction, removeStudentAction } from "../../actions/courseActions";
-import { getAllNotRegisteredCourseStudents, removeStudentFromCourse } from "../../api/professorsAPI";
+import { initCourseAction, removeStudentAction } from "../../actions/courseActions";
+import { getCourseInfo, removeStudentFromCourse } from "../../api/professorsAPI";
 import { CourseContext } from "../../context/CourseContext";
 import { LoginContext } from "../../context/LoginContext";
 
@@ -14,15 +14,13 @@ const RegisteredStudent = ({ registeredStudent, index }) => {
         registeredStudent.student.email
             ).then(
               (courseData) => {
-                    courseDispatch(removeStudentAction(courseData));
-                    getAllNotRegisteredCourseStudents(
-              userData.token,
-              courseState.name
-            ).then(
-              (courseData) => {
-                courseDispatch(initNotCourseStudentsAction(courseData));
-              },
-            );
+                courseDispatch(removeStudentAction(courseData));
+                
+                getCourseInfo(userData.token, courseState.name).then(
+                  (courseData) => {
+                      courseDispatch(initCourseAction(courseData));
+                  }
+                );
             },
         );
     };

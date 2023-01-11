@@ -2,13 +2,6 @@ import axios from "axios";
 
 const url = process.env.REACT_APP_API_URL;
 
-// export const getProfessorInfo = async (token) => {
-//   const routeUrl = url + "professors/connected-professor-info";
-//   const headers = { Authorization: "Bearer " + token };
-//   const professor = await axios.get(routeUrl, {headers});
-//   return professor.data;
-// };
-
 export const editProfessorInfo = async (token, changes) => {
   const routeUrl = url + "professors";
   const headers = { Authorization: "Bearer " + token };
@@ -17,7 +10,6 @@ export const editProfessorInfo = async (token, changes) => {
 };
 
 export const logoutProfessor = async (token) => {
-  console.log("token logout: "+token)
   const routeUrl = url + "professors/logout";
   const headers = { Authorization: "Bearer " + token };
   const professor = await axios.post(routeUrl,{} ,{ headers });
@@ -47,7 +39,6 @@ export const registerStudentForCourse = async (
   courseName,
   studentId
 ) => {
-  console.log(studentId);
   const routeUrl = url + "students/courses/" + courseName;
   const headers = { Authorization: "Bearer " + token };
   const response = await axios.post(
@@ -61,9 +52,6 @@ export const registerStudentForCourse = async (
 export const removeStudentFromCourse = async (token, courseName, studentId) => {
   const routeUrl = url + "students/courses/" + courseName;
   const headers = { Authorization: "Bearer " + token };
-  console.log("token: " + token);
-  console.log("courseName: " + courseName);
-  console.log("studentId: " + studentId);
   const response = await axios.delete(
     routeUrl,
     {

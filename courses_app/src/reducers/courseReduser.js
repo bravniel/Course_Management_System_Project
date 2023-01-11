@@ -22,7 +22,7 @@ const courseReducer = (courseState, action) => {
         dates: action.courseData.course.allDates,
         registeredStudents: action.courseData.thisCourseStudents,
         newStudents: action.courseData.allNotRegisteredStudents,
-        isCourseExist: false,
+        isCourseExist: true,
       };
     case "ADD_STUDENT":
       return {

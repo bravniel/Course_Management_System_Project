@@ -3,7 +3,9 @@ const { auth } = require("../middleware/auth");
 const Course = require("../models/courseModel");
 const Enrollment = require("../models/enrollmentModal");
 const mongoose = require("mongoose");
-const { getAllCourseStudents } = require("../utils/utils");
+const getArrayOfDates = require("../utils/utils");
+const getAllCourseStudents = require("../utils/professorUtils");
+const Student = require("../models/studentModel");
 const router = new express.Router();
 
 router.get("/courses", auth, async (req, res) => {
@@ -36,7 +38,8 @@ router.get("/courses/:id", auth, async (req, res) => {
     );
     if (!course || course.length === 0)
       return res.status(400).send({ Error: "Course not found" });
-    const thisCourseStudents = getAllCourseStudents(course._id);
+    const thisCourseStudents = await getAllCourseStudents(course._id);
+    const allStudents = await Student.find();
     // all students that not registered for the course
     const allNotRegisteredStudents = getAllNotRegisteredStudents(
       allStudents,
@@ -59,7 +62,10 @@ router.get("/courses/:id/:date", auth, async (req, res) => {
     const course = await Course.findOne({ name: courseName });
     if (!course || course.length === 0)
       return res.status(400).send({ Error: "Course not found" });
-    const thisCourseEnrollments = getAllCourseEnrollments(course._id);
+    const thisCourseEnrollments = await getAllCourseEnrollments(
+      course._id,
+      courseDateNew
+    );
     if (!thisCourseEnrollments || thisCourseEnrollments.length === 0)
       return res.status(400).send({ Error: "Enrollments not found" });
     res.send(thisCourseEnrollments);
@@ -123,24 +129,24 @@ router.delete("/courses/:id", auth, async (req, res) => {
 
 const getAllNotRegisteredStudents = (allStudents, allRegisteredStudents) => {
   let allNotRegisteredStudents = [...allStudents];
-  allStudents.forEach((student, i) => {
-    allRegisteredStudents.forEach((existStudent) => {
-      allNotRegisteredStudents = allNotRegisteredStudents.filter(
-        (student) => student.email !== existStudent.student.email
-      );
-    });
+  allRegisteredStudents.forEach((existStudent) => {
+    allNotRegisteredStudents = allNotRegisteredStudents.filter(
+      (student) => student.email !== existStudent.student.email
+    );
   });
   return allNotRegisteredStudents;
 };
 
-const getAllCourseEnrollments = async (courseId) => {
+const getAllCourseEnrollments = async (courseId, courseDateNew) => {
   const thisCourseEnrollments = await Enrollment.find(
     {
       course: courseId,
     },
     { student: 1, statuses: 1 }
   )
-    .select({ statuses: { $elemMatch: { classDate: courseDateNew } } })
+    .select({
+      statuses: { $elemMatch: { classDate: courseDateNew } },
+    })
     .populate("student");
   return thisCourseEnrollments;
 };

@@ -8,8 +8,12 @@ const LessonEnrollments = ({ date, lessonStudentsEnrollments, closeLessonEnrollm
   const { courseState } = useContext(CourseContext);  
   const dateDay = new Date(date);
   const thisDateSchedule = courseState.schedule.filter(el => el.day === days[dateDay.getDay()]);
-  const currentDate = new Date(); 
-  return (
+  const currentDate = new Date();
+
+  console.log("lessonStudentsEnrollments");
+  console.log(lessonStudentsEnrollments);
+  
+  return lessonStudentsEnrollments? (
     <div className="private-message">
       <div className="private-message__body">
         <div
@@ -24,11 +28,27 @@ const LessonEnrollments = ({ date, lessonStudentsEnrollments, closeLessonEnrollm
       {lessonStudentsEnrollments.map((lessonStudentEnrollment, i) => (
         <div key={i} className={i % 2 == 0 ? "my-message" : "message"}>
           <p>
-            <u>{lessonStudentEnrollment.student.firstName} {lessonStudentEnrollment.student.lastName}:</u> {dateDay.getTime() > currentDate.getTime() ? (<span>Future course, not yet held</span>) : (<span className={!!lessonStudentEnrollment.statuses[0].presence ? "attend" : "absent"}>{!!lessonStudentEnrollment.statuses[0].presence ? "Attend" : "Absent"}</span>)}.<br />
+            <u>{lessonStudentEnrollment.student.firstName + lessonStudentEnrollment.student.lastName}:</u>
+             {dateDay.getTime() > currentDate.getTime() ? (<span>Future course, not yet held</span>) : (<span className={!!lessonStudentEnrollment.statuses[0].presence ? "attend" : "absent"}>{!!lessonStudentEnrollment.statuses[0].presence ? "Attend" : "Absent"}</span>)}.<br />
             {dateDay.getTime() < currentDate.getTime() && (lessonStudentEnrollment.statuses[0].absenceReason ? `Absence Reason: ${lessonStudentEnrollment.statuses[0].absenceReason}.` : "")}
           </p>
         </div>
           ))}
+      </div>
+    </div>
+  ) : (
+    <div className="private-message">
+      <div className="private-message__body">
+        <div
+          onClick={() => {
+            closeLessonEnrollments();
+          }}
+          className="close-modal"
+        >
+          x
+        </div>
+        <h4>Lesson Enrollments Statuses for {id} course date: {date} ( {days[dateDay.getDay()]}, {thisDateSchedule[0].hours.startHour} - {thisDateSchedule[0].hours.endHour} )</h4>
+        <div className="my-message">There are no registered students</div>
       </div>
     </div>
   );

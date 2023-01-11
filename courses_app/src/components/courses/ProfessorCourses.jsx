@@ -27,16 +27,23 @@ const ProfessorCourses = () => {
 
     useEffect(() => {
         let isComponentExist = true;
-        getAllCourses(userData.token,userData.user._id).then((courses) => {
-            if (isComponentExist) {
-                dispatcRooms(setRoomsAction(courses.courses));
-                setIsRoomLoaded(true);
-            }
-        });
+      getAllCourses(userData.token, userData.user._id).then(
+        (courses) => {
+          if (isComponentExist) {
+            dispatcRooms(setRoomsAction(courses.courses));
+            setIsRoomLoaded(true);
+          }
+        },
+        (err) => {
+          dispatcRooms(setRoomsAction([]));
+          setIsRoomLoaded(true);
+        }
+      );
+          
         return () => {
             isComponentExist = false;
         };
-    }, [userData.token]);
+    }, [userData.token, rooms]);
 
     const navigate = useNavigate();
 
@@ -131,86 +138,231 @@ const onChangeEndTime = (value,index) => {
   return (
     <div className="rooms">
       <div className="rooms__section">
-              <h3>Choose course:</h3>
-              <div className="courses__day-container">
-                  <input type="checkbox" className="" id="searchByProfessorId" value={searchByProfessorId} checked disabled/>
-                    <label className="" htmlFor="searchByProfessorId">My courses</label>
-                </div>
-        {rooms.map((room) => (
-          <div className="room" key={room.name}>
-            <Link to={"/course/" + room.name}>{room.name}</Link>
-          </div>
-        ))}
+        <h3>Choose course:</h3>
+        <div className="courses__day-container">
+          <input
+            type="checkbox"
+            className=""
+            id="searchByProfessorId"
+            value={searchByProfessorId}
+            checked
+            disabled
+          />
+          <label className="" htmlFor="searchByProfessorId">
+            My courses
+          </label>
+        </div>
+        {rooms.length > 0 &&
+          rooms.map((room) => (
+            <div className="room" key={room.name}>
+              <Link to={"/course/" + room.name}>{room.name}</Link>
+            </div>
+          ))}
+
+        {rooms.length == 0 &&
+           (
+            <div className="room" >
+              no coursrs!
+            </div>
+          )}
       </div>
       <div className="rooms__section">
         <h3>Create course:</h3>
         <form onSubmit={onSubmitInputNewRoom}>
-                  <input className={!isNameinputInvalid ? "rooms__input-new" : "rooms__input-invalid-new"} placeholder="course name" onBlur={onBlurNameInput} />
-                  {isNameinputInvalid && (
-                      <div className="invalid-message">{errorMessage}</div>
-            )}
-            <label className="">Start date:</label>
-            <input type="date" className="rooms__input-new" value={startDate.toISOString().substring(0, 10)} min={currentDate.toISOString().substring(0, 10)} max={maxStartDate.toISOString().substring(0, 10)} onChange={event => setStartDate(event.target.valueAsDate)}/>
-            <label className="" >End date:</label>
-            <input type="date" className="rooms__input-new" value={endDate.toISOString().substring(0, 10)} min={maxStartDate.toISOString().substring(0, 10)} max={maxEndDate.toISOString().substring(0, 10)} onChange={event => setEndDate(event.target.valueAsDate)}/>
-            <div className="courses__schedule-container" ><u>Schedule:</u></div>
-            
-            <div className="courses__day-container">
-                <input type="checkbox" checked={daysChecked[0]} onChange={onChangeDay} id="0" value="Sunday"/>
-                <label className="" htmlFor="0">Sunday</label>
-            </div>
-            {daysChecked[0] && (<div className="courses__hours-container">
-                <label className="">Start:</label>
-                <input type="time" className="courses__input-time" value={scheduleStartHours[0]} onChange={(event) => onChangeStartTime(event.target.value,0)}/>
-                <label className="">End:</label>
-                <input type="time" className="courses__input-time" value={scheduleEndHours[0]} onChange={(event) => onChangeEndTime(event.target.value,0)}/>
-            </div>)}
+          <input
+            className={
+              !isNameinputInvalid
+                ? "rooms__input-new"
+                : "rooms__input-invalid-new"
+            }
+            placeholder="course name"
+            onBlur={onBlurNameInput}
+          />
+          {isNameinputInvalid && (
+            <div className="invalid-message">{errorMessage}</div>
+          )}
+          <label className="">Start date:</label>
+          <input
+            type="date"
+            className="rooms__input-new"
+            value={startDate.toISOString().substring(0, 10)}
+            min={currentDate.toISOString().substring(0, 10)}
+            max={maxStartDate.toISOString().substring(0, 10)}
+            onChange={(event) => setStartDate(event.target.valueAsDate)}
+          />
+          <label className="">End date:</label>
+          <input
+            type="date"
+            className="rooms__input-new"
+            value={endDate.toISOString().substring(0, 10)}
+            min={maxStartDate.toISOString().substring(0, 10)}
+            max={maxEndDate.toISOString().substring(0, 10)}
+            onChange={(event) => setEndDate(event.target.valueAsDate)}
+          />
+          <div className="courses__schedule-container">
+            <u>Schedule:</u>
+          </div>
 
-            <div className="courses__day-container">
-                <input type="checkbox" checked={daysChecked[1]} onChange={onChangeDay} id="1" value="Monday"/>
-                <label className="" htmlFor="1">Monday</label>
+          <div className="courses__day-container">
+            <input
+              type="checkbox"
+              checked={daysChecked[0]}
+              onChange={onChangeDay}
+              id="0"
+              value="Sunday"
+            />
+            <label className="" htmlFor="0">
+              Sunday
+            </label>
+          </div>
+          {daysChecked[0] && (
+            <div className="courses__hours-container">
+              <label className="">Start:</label>
+              <input
+                type="time"
+                className="courses__input-time"
+                value={scheduleStartHours[0]}
+                onChange={(event) => onChangeStartTime(event.target.value, 0)}
+              />
+              <label className="">End:</label>
+              <input
+                type="time"
+                className="courses__input-time"
+                value={scheduleEndHours[0]}
+                onChange={(event) => onChangeEndTime(event.target.value, 0)}
+              />
             </div>
-            {daysChecked[1] && (<div className="courses__hours-container">
-                <label className="">Start:</label>
-                <input type="time" className="courses__input-time" value={scheduleStartHours[1]} onChange={(event) => onChangeStartTime(event.target.value,1)}/>
-                <label className="">End:</label>
-                <input type="time" className="courses__input-time" value={scheduleEndHours[1]} onChange={(event) => onChangeEndTime(event.target.value,1)}/>
-                  </div>)}
+          )}
 
-            <div className="courses__day-container">
-                <input type="checkbox" checked={daysChecked[2]} onChange={onChangeDay} id="2" value="Tuesday"/>
-                <label className="" htmlFor="2">Tuesday</label>
+          <div className="courses__day-container">
+            <input
+              type="checkbox"
+              checked={daysChecked[1]}
+              onChange={onChangeDay}
+              id="1"
+              value="Monday"
+            />
+            <label className="" htmlFor="1">
+              Monday
+            </label>
+          </div>
+          {daysChecked[1] && (
+            <div className="courses__hours-container">
+              <label className="">Start:</label>
+              <input
+                type="time"
+                className="courses__input-time"
+                value={scheduleStartHours[1]}
+                onChange={(event) => onChangeStartTime(event.target.value, 1)}
+              />
+              <label className="">End:</label>
+              <input
+                type="time"
+                className="courses__input-time"
+                value={scheduleEndHours[1]}
+                onChange={(event) => onChangeEndTime(event.target.value, 1)}
+              />
             </div>
-            {daysChecked[2] && (<div className="courses__hours-container">
-                <label className="">Start:</label>
-                <input type="time" className="courses__input-time" value={scheduleStartHours[2]} onChange={(event) => onChangeStartTime(event.target.value,2)}/>
-                <label className="">End:</label>
-                <input type="time" className="courses__input-time" value={scheduleEndHours[2]} onChange={(event) => onChangeEndTime(event.target.value,2)}/>
-                  </div>)}
+          )}
 
-            <div className="courses__day-container">
-                <input type="checkbox" checked={daysChecked[3]} onChange={onChangeDay} id="3" value="Wednesday"/>
-                <label className="" htmlFor="3">Wednesday</label>
+          <div className="courses__day-container">
+            <input
+              type="checkbox"
+              checked={daysChecked[2]}
+              onChange={onChangeDay}
+              id="2"
+              value="Tuesday"
+            />
+            <label className="" htmlFor="2">
+              Tuesday
+            </label>
+          </div>
+          {daysChecked[2] && (
+            <div className="courses__hours-container">
+              <label className="">Start:</label>
+              <input
+                type="time"
+                className="courses__input-time"
+                value={scheduleStartHours[2]}
+                onChange={(event) => onChangeStartTime(event.target.value, 2)}
+              />
+              <label className="">End:</label>
+              <input
+                type="time"
+                className="courses__input-time"
+                value={scheduleEndHours[2]}
+                onChange={(event) => onChangeEndTime(event.target.value, 2)}
+              />
             </div>
-            {daysChecked[3] && (<div className="courses__hours-container">
-                <label className="">Start:</label>
-                <input type="time" className="courses__input-time" value={scheduleStartHours[3]} onChange={(event) => onChangeStartTime(event.target.value,3)}/>
-                <label className="">End:</label>
-                <input type="time" className="courses__input-time" value={scheduleEndHours[3]} onChange={(event) => onChangeEndTime(event.target.value,3)}/>
-                  </div>)}
+          )}
 
-            <div className="courses__day-container">
-                <input type="checkbox" checked={daysChecked[4]} onChange={onChangeDay} id="4" value="Thursday"/>
-                <label className="" htmlFor="4">Thursday</label>
+          <div className="courses__day-container">
+            <input
+              type="checkbox"
+              checked={daysChecked[3]}
+              onChange={onChangeDay}
+              id="3"
+              value="Wednesday"
+            />
+            <label className="" htmlFor="3">
+              Wednesday
+            </label>
+          </div>
+          {daysChecked[3] && (
+            <div className="courses__hours-container">
+              <label className="">Start:</label>
+              <input
+                type="time"
+                className="courses__input-time"
+                value={scheduleStartHours[3]}
+                onChange={(event) => onChangeStartTime(event.target.value, 3)}
+              />
+              <label className="">End:</label>
+              <input
+                type="time"
+                className="courses__input-time"
+                value={scheduleEndHours[3]}
+                onChange={(event) => onChangeEndTime(event.target.value, 3)}
+              />
             </div>
-            {daysChecked[4] && (<div className="courses__hours-container">
-                <label className="">Start:</label>
-                <input type="time" className="courses__input-time" value={scheduleStartHours[4]} onChange={(event) => onChangeStartTime(event.target.value,4)}/>
-                <label className="">End:</label>
-                <input type="time" className="courses__input-time" value={scheduleEndHours[4]} onChange={(event) => onChangeEndTime(event.target.value,4)}/>
-            </div>)}
-                  
-          <button type="submit" className="rooms__button-new" disabled={isFormInavlid()}>
+          )}
+
+          <div className="courses__day-container">
+            <input
+              type="checkbox"
+              checked={daysChecked[4]}
+              onChange={onChangeDay}
+              id="4"
+              value="Thursday"
+            />
+            <label className="" htmlFor="4">
+              Thursday
+            </label>
+          </div>
+          {daysChecked[4] && (
+            <div className="courses__hours-container">
+              <label className="">Start:</label>
+              <input
+                type="time"
+                className="courses__input-time"
+                value={scheduleStartHours[4]}
+                onChange={(event) => onChangeStartTime(event.target.value, 4)}
+              />
+              <label className="">End:</label>
+              <input
+                type="time"
+                className="courses__input-time"
+                value={scheduleEndHours[4]}
+                onChange={(event) => onChangeEndTime(event.target.value, 4)}
+              />
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="rooms__button-new"
+            disabled={isFormInavlid()}
+          >
             Create
           </button>
         </form>

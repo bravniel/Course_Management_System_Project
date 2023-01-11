@@ -2,13 +2,6 @@ import axios from "axios";
 
 const url = process.env.REACT_APP_API_URL;
 
-// export const getStudentInfo = async (token) => {
-//   const routeUrl = url + "students/connected-student-info";
-//   const headers = { Authorization: "Bearer " + token };
-//   const student = await axios.get(routeUrl, {headers} );
-//   return student.data;
-// };
-
 export const editStudentInfo = async (token, changes) => {
   const routeUrl = url + "students";
   const headers = { Authorization: "Bearer " + token };
@@ -47,13 +40,5 @@ export const updateStudentClassAttendanceStatus = async (
   const course = await axios.patch(routeUrl, attendanceStatus, {headers});
   return course.data;
 };
-
-// export const getReasonFromAbsence = async (reason, token) => {
-//   const headers = { Authorization: "Bearer " + token };
-//   const response = await axios.post(url + "absences/get-reason", reason, {
-//     headers,
-//   });
-//   return response.data.data;
-// };
 
 

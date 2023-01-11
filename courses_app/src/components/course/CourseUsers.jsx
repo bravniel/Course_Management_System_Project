@@ -31,27 +31,35 @@ const onClickDeleteCourse = () => {
     return (
       <div className="chatroom__main">
         <div>
-                <h3>Course Name: {courseState.name}</h3>
-                <button onClick={onClickDeleteCourse} className="rooms__button-new">
+          <h3>Course Name: {courseState.name}</h3>
+          <button onClick={onClickDeleteCourse} className="rooms__button-new">
             Delete course
           </button>
-                <div>Registerd students:</div>
-          {courseState.registeredStudents.map((registeredStudent, i) => (
-            <RegisteredStudent
-              key={registeredStudent.student.email}
-              registeredStudent={registeredStudent}
-              index={i}
-            />
-          ))}
-                
-        <div>Add students:</div>
-        {courseState.newStudents.map((notRegisteredStudent, i) => (
-            <NotRegisteredStudent
-              key={notRegisteredStudent.email}
-              notRegisteredStudent={notRegisteredStudent}
-              index={i}
-            />
-          ))}
+          <div>Registerd students:</div>
+          {courseState.registeredStudents.length > 0 &&
+            courseState.registeredStudents.map((registeredStudent, i) => (
+              <RegisteredStudent
+                key={registeredStudent.student.email}
+                registeredStudent={registeredStudent}
+                index={i}
+              />
+            ))}
+          {courseState.registeredStudents.length == 0 && (
+            <div className="no-students">There are no registered students.</div>
+          )}
+
+          <div>Add students:</div>
+          {courseState.newStudents.length > 0 &&
+            courseState.newStudents.map((notRegisteredStudent, i) => (
+              <NotRegisteredStudent
+                key={notRegisteredStudent.email}
+                notRegisteredStudent={notRegisteredStudent}
+                index={i}
+              />
+            ))}
+          {courseState.newStudents.length == 0 && (
+            <div className="no-students">All students are registered.</div>
+          )}
         </div>
         {/* <AddMessage
         //addMessage={props.addMessage}
