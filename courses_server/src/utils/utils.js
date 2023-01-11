@@ -1,3 +1,15 @@
+const Enrollment = require("../models/enrollmentModal");
+
+const getAllCourseStudents = async (courseId) => {
+  const thisCourseStudents = await Enrollment.find(
+    {
+      course: courseId,
+    },
+    { student: 1 }
+  ).populate("student");
+  return thisCourseStudents;
+};
+
 // Get all the dates of a day in the week between two dates
 function getDates(startDate, endDate, day) {
   let date = new Date(startDate);
@@ -39,4 +51,4 @@ const getArrayOfDates = (startDate, endDate, days) => {
   return dates;
 };
 
-module.exports = getArrayOfDates;
+module.exports = { getAllCourseStudents, getArrayOfDates };

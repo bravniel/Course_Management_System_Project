@@ -5,11 +5,9 @@ const Student = require("../models/studentModel");
 const Course = require("../models/courseModel");
 const Enrollment = require("../models/enrollmentModal");
 const mongoose = require("mongoose");
-// const { getAllCourseStudents, getArrayOfDates } = require("../utils/utils");
-const getArrayOfDates = require("../utils/utils");
-const getAllCourseStudents = require("../utils/professorUtils");
+const utils = require("../utils/utils");
 
-const router = express.Router();
+const router = new express.Router();
 
 // logout professor - remove connected token
 router.post("/professors/logout", auth, async (req, res) => {
@@ -199,7 +197,7 @@ router.post("/students/courses/:id", auth, async (req, res) => {
         .status(400)
         .send({ Error: "This student already belong to this course" });
     }
-    const allDates = getArrayOfDates(
+    const allDates = utils.getArrayOfDates(
       course.startDate,
       course.endDate,
       course.schedule
@@ -211,7 +209,7 @@ router.post("/students/courses/:id", auth, async (req, res) => {
       statuses: statuses,
     });
     await enrollment.save();
-    const thisCourseStudents = await getAllCourseStudents(course._id);
+    const thisCourseStudents = await utils.getAllCourseStudents(course._id);
     res.send(thisCourseStudents);
   } catch (e) {
     res.status(500).send({ Error: e.message });
@@ -235,7 +233,7 @@ router.delete("/students/courses/:id", auth, async (req, res) => {
     if (!enrollment) {
       return res.status(400).send({ Error: "No belonging for course" });
     }
-    const thisCourseStudents = await getAllCourseStudents(course._id);
+    const thisCourseStudents = await utils.getAllCourseStudents(course._id);
     res.send(thisCourseStudents);
   } catch (e) {
     res.status(500).send({ Error: e.message });

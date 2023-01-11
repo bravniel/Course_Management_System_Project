@@ -3,6 +3,7 @@ const { auth } = require("../middleware/auth");
 const Student = require("../models/studentModel");
 const Course = require("../models/courseModel");
 const Enrollment = require("../models/enrollmentModal");
+
 const router = new express.Router();
 
 router.get("/connected-user-info", auth, async (req, res) => {

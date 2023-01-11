@@ -3,9 +3,9 @@ const { auth } = require("../middleware/auth");
 const Course = require("../models/courseModel");
 const Enrollment = require("../models/enrollmentModal");
 const mongoose = require("mongoose");
-const getArrayOfDates = require("../utils/utils");
-const getAllCourseStudents = require("../utils/professorUtils");
 const Student = require("../models/studentModel");
+const utils = require("../utils/utils");
+
 const router = new express.Router();
 
 router.get("/courses", auth, async (req, res) => {
@@ -38,7 +38,7 @@ router.get("/courses/:id", auth, async (req, res) => {
     );
     if (!course || course.length === 0)
       return res.status(400).send({ Error: "Course not found" });
-    const thisCourseStudents = await getAllCourseStudents(course._id);
+    const thisCourseStudents = await utils.getAllCourseStudents(course._id);
     const allStudents = await Student.find();
     // all students that not registered for the course
     const allNotRegisteredStudents = getAllNotRegisteredStudents(

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const getArrayOfDates = require("../utils/utils");
+const utils = require("../utils/utils");
 
 const courseSchema = new mongoose.Schema(
   {
@@ -54,7 +54,7 @@ courseSchema.virtual("allDates").get(function () {
   const start = this.startDate;
   const end = this.endDate;
   const schedule = this.schedule;
-  const allDates = getArrayOfDates(start, end, schedule);
+  const allDates = utils.getArrayOfDates(start, end, schedule);
   return allDates;
 });
 

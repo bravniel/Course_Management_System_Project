@@ -17,9 +17,6 @@ app.use(coursesRouter);
 
 app.listen(port, () => {
     console.log("-> server has been connected successfully to port:", port, "!");
-    // console.log(`Server running at http://127.0.0.1:${port}/`);
 });
 
 module.exports = app;
-
-// To run server --> npm run dev

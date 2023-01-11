@@ -3,11 +3,8 @@ const Professor = require("../models/professorModel");
 const Student = require("../models/studentModel");
 
 const auth = async (req, res, next) => {
-  console.log(req.headers);
   try {
-    console.log("test: " + req.header("Authorization"));
     const token = req.header("Authorization").replace("Bearer ", "");
-    console.log("token: " + token);
     const data = jwt.verify(token, process.env.TOKEN_SECRET);
     let user = {};
     if (!data.isProfessor) {
