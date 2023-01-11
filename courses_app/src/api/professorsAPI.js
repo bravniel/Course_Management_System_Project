@@ -74,8 +74,8 @@ export const getAllStudents = async (token) => {
 // |----------------------------------------------------------------------------------------------|
 
 export const getAllCourses = async (token, professorId) => {
-  const routeUrl =
-    url + "courses" + `?searchByProfessor=${professorId}`;
+  const searchByWho = professorId ? `?searchByProfessor=${professorId}`: "";
+  const routeUrl = url + "courses" + searchByWho;
   const headers = { Authorization: "Bearer " + token };
   const courses = await axios.get(routeUrl, {headers});
   return courses.data;

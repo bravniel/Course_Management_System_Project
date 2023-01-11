@@ -39,7 +39,7 @@ const CourseDates = (props) => {
   };
 
     return (
-      <div className="chatroom__users">
+      <div className="rooms__section">
         <h3>Dates</h3>
         {courseToDisplay.map((date) => (
           <div

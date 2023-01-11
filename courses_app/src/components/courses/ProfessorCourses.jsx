@@ -10,7 +10,8 @@ const ProfessorCourses = () => {
     const { userData } = useContext(LoginContext);
     const [rooms, dispatcRooms] = useReducer(roomsReducer, []);
     const [isRoomLoaded, setIsRoomLoaded] = useState(false);
-    const [searchByProfessorId, setSearchByProfessorId] = useState(userData.user._id);
+  const [searchByWho, setSearchByWho] = useState(null);
+  const [isSearchByProfessorId, setIsSearchByProfessorId] = useState(false);
     const [name, setName] = useState("");
     const [isNameinputInvalid, setIsNameInputInvalid] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
@@ -26,8 +27,8 @@ const ProfessorCourses = () => {
     const [scheduleEndHours, setScheduleEndHours] = useState(["12:00", "12:30", "13:00", "13:30", "14:00"]);
 
     useEffect(() => {
-        let isComponentExist = true;
-      getAllCourses(userData.token, userData.user._id).then(
+      let isComponentExist = true;
+      getAllCourses(userData.token, searchByWho).then(
         (courses) => {
           if (isComponentExist) {
             dispatcRooms(setRoomsAction(courses.courses));
@@ -39,11 +40,11 @@ const ProfessorCourses = () => {
           setIsRoomLoaded(true);
         }
       );
-          
-        return () => {
-            isComponentExist = false;
-        };
-    }, [userData.token, rooms]);
+
+      return () => {
+        isComponentExist = false;
+      };
+    }, [userData.token, searchByWho]);
 
     const navigate = useNavigate();
 
@@ -109,19 +110,6 @@ const ProfessorCourses = () => {
       setScheduleDays([...scheduleDays, lesson]);
     }
   }
-
-    // const onChangeDay = (event) => {
-    //     const day = event.target.value;
-    //     const position = event.target.id;
-    // let updatedCheckedDaysState = daysChecked.map((isDayChecked, index) =>
-    //     index === +position ? !isDayChecked : isDayChecked);
-    //     setDaysChecked(updatedCheckedDaysState);
-    //     daysChecked[+position] ? setIsScheduleDaysInvalid(false) : setIsScheduleDaysInvalid(true);
-    //     let updatedScheduleDaysValue = [...scheduleDays];
-    //     const hours = {startHour: scheduleStartHours[+position], endHour: scheduleEndHours[+position]};    
-    // daysChecked[+position] ? (updatedScheduleDaysValue=updatedScheduleDaysValue.concat({day, hours:hours})) : (updatedScheduleDaysValue.splice(updatedScheduleDaysValue.findIndex((el)=>el.day === day),1));
-    //     setScheduleDays(updatedScheduleDaysValue);
-    // };
     
     const onChangeStartTime = (value,index) => {
     let updatedScheduleStartHoursValue = [...scheduleStartHours];  
@@ -133,7 +121,13 @@ const onChangeEndTime = (value,index) => {
     let updatedScheduleEndHoursValue = [...scheduleEndHours];  
     updatedScheduleEndHoursValue[index] = value;
     setScheduleEndHours(updatedScheduleEndHoursValue);
-    };
+  };
+  
+  const onChangeSearchBy = () => {
+    setIsRoomLoaded(false);
+    setSearchByWho(!isSearchByProfessorId ? userData.user._id : null);
+    setIsSearchByProfessorId(!isSearchByProfessorId);
+  };
     
   return (
     <div className="rooms">
@@ -142,11 +136,8 @@ const onChangeEndTime = (value,index) => {
         <div className="courses__day-container">
           <input
             type="checkbox"
-            className=""
-            id="searchByProfessorId"
-            value={searchByProfessorId}
-            checked
-            disabled
+            checked={isSearchByProfessorId}
+            onChange={onChangeSearchBy}
           />
           <label className="" htmlFor="searchByProfessorId">
             My courses
@@ -159,12 +150,7 @@ const onChangeEndTime = (value,index) => {
             </div>
           ))}
 
-        {rooms.length == 0 &&
-           (
-            <div className="room" >
-              no coursrs!
-            </div>
-          )}
+        {rooms.length == 0 && <div className="no-students">no coursrs!</div>}
       </div>
       <div className="rooms__section">
         <h3>Create course:</h3>

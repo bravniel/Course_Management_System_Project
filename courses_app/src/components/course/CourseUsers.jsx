@@ -29,7 +29,7 @@ const onClickDeleteCourse = () => {
   }
 
     return (
-      <div className="chatroom__main">
+      <div className="rooms__section">
         <div>
           <h3>Course Name: {courseState.name}</h3>
           <button onClick={onClickDeleteCourse} className="rooms__button-new">
