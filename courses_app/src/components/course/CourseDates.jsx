@@ -11,7 +11,6 @@ const CourseDates = (props) => {
   const [lessonStudentsEnrollmentsForm, setLessonStudentsEnrollmentsForm] = useState(false);
   const [lessonStudentsEnrollments, setLessonStudentsEnrollments] = useState(null);
   const [date, setDate] = useState(null);
-  const [isLessonStudentsEnrollmentsExist, setIsLessonStudentsEnrollmentsExist] = useState(false);
 
   useEffect(() => {
     setCourseToDisplay([...courseState.dates]);
@@ -39,7 +38,7 @@ const CourseDates = (props) => {
   };
 
     return (
-      <div className="rooms__section">
+      <div className="page__section">
         <h3>Dates</h3>
         {courseToDisplay.map((date) => (
           <div

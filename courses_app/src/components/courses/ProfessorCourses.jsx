@@ -130,8 +130,8 @@ const onChangeEndTime = (value,index) => {
   };
     
   return (
-    <div className="rooms">
-      <div className="rooms__section">
+    <div className="pages">
+      <div className="pages__section">
         <h3>Choose course:</h3>
         <div className="courses__day-container">
           <input
@@ -145,21 +145,21 @@ const onChangeEndTime = (value,index) => {
         </div>
         {rooms.length > 0 &&
           rooms.map((room) => (
-            <div className="room" key={room.name}>
+            <div className="page" key={room.name}>
               <Link to={"/course/" + room.name}>{room.name}</Link>
             </div>
           ))}
 
         {rooms.length == 0 && <div className="no-students">no coursrs!</div>}
       </div>
-      <div className="rooms__section">
+      <div className="pages__section">
         <h3>Create course:</h3>
         <form onSubmit={onSubmitInputNewRoom}>
           <input
             className={
               !isNameinputInvalid
-                ? "rooms__input-new"
-                : "rooms__input-invalid-new"
+                ? "courses__input-new"
+                : "courses__input-invalid-new"
             }
             placeholder="course name"
             onBlur={onBlurNameInput}
@@ -170,7 +170,7 @@ const onChangeEndTime = (value,index) => {
           <label className="">Start date:</label>
           <input
             type="date"
-            className="rooms__input-new"
+            className="courses__input-new"
             value={startDate.toISOString().substring(0, 10)}
             min={currentDate.toISOString().substring(0, 10)}
             max={maxStartDate.toISOString().substring(0, 10)}
@@ -179,7 +179,7 @@ const onChangeEndTime = (value,index) => {
           <label className="">End date:</label>
           <input
             type="date"
-            className="rooms__input-new"
+            className="courses__input-new"
             value={endDate.toISOString().substring(0, 10)}
             min={maxStartDate.toISOString().substring(0, 10)}
             max={maxEndDate.toISOString().substring(0, 10)}
@@ -346,7 +346,7 @@ const onChangeEndTime = (value,index) => {
 
           <button
             type="submit"
-            className="rooms__button-new"
+            className="courses__button-new"
             disabled={isFormInavlid()}
           >
             Create

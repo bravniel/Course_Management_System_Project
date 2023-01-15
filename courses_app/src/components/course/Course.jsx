@@ -9,9 +9,9 @@ const Course = (props) => {
   const { courseState } = useContext(CourseContext);
   
   return (
-    <div className="chatroom-container">
+    <div className="course-container">
       {courseState.isCourseExist ? (
-        <div className="chatroom">
+        <div className="course">
           <CourseDates/>
           <CourseUsers/>
         </div>

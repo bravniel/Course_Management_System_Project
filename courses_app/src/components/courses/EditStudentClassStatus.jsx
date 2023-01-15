@@ -17,8 +17,8 @@ const EditStudentClassStatus = ({ classStatus,courseName, closeEditStudentClassS
         })
     }
   return (
-    <div className="private-message">
-      <div className="private-message__body">
+    <div className="modal">
+      <div className="modal__body">
         <div
           onClick={() => {
             closeEditStudentClassStatus();

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { loginAction } from "../../actions/loginActions";
 import { loginToSite } from "../../api/generalAPI";
 import { LoginContext } from "../../context/LoginContext";
+import FormInput from "../form/FormInput";
 const LoginForm = (props) => {
   const { dispatchUserData } = useContext(LoginContext);
 
@@ -25,7 +26,7 @@ const LoginForm = (props) => {
     return email === "" || password === "";
   };
 
-  const onBlurEmailInput = (event) => {
+  const onChangeEmailInput = (event) => {
     const theEmail = event.target.value.trim();
     if (theEmail === "") {
       setEmail("");
@@ -36,7 +37,7 @@ const LoginForm = (props) => {
     }
   };
 
-  const onBlurPasswordInput = (event) => {
+  const onChangePasswordInput = (event) => {
     const thePassword = event.target.value.trim();
     setPassword(thePassword === "" ? "" : thePassword);
     setIsPasswordInputValid(thePassword !== "");
@@ -45,8 +46,6 @@ const LoginForm = (props) => {
   const onSubmitform = (event) => {
     event.preventDefault();
     console.log("login form:", email, password);
-    // dispatchUserData(loginAction());
-    // navigate("/rooms");
     loginToSite(email, password, role).then(
       (userData) => {
         dispatchUserData(loginAction(userData));
@@ -59,10 +58,6 @@ const LoginForm = (props) => {
         // }
       }
     );
-  };
-
-  const onClickSubscribe = () => {
-    props.setIsLoginMode(false);
   };
 
   const onRoleChange = (event) => {
@@ -79,7 +74,7 @@ const LoginForm = (props) => {
         <input
           placeholder="Email"
           className={isEmailinputValid ? "input-valid" : "input-invalid"}
-          onBlur={onBlurEmailInput}
+          onChange={onChangeEmailInput}
         />
         {!isEmailinputValid && (
           <div className="invalid-message">You must enter your email.</div>
@@ -88,7 +83,7 @@ const LoginForm = (props) => {
           type="password"
           placeholder="Password"
           className={isPasswordInputValid ? "input-valid" : "input-invalid"}
-          onBlur={onBlurPasswordInput}
+          onChange={onChangePasswordInput}
         />
         {!isPasswordInputValid && (
           <div className="invalid-message">You must enter your password.</div>
@@ -102,13 +97,11 @@ const LoginForm = (props) => {
               id="student"
               checked={role === "student"}
               onChange={onRoleChange}
-              disabled={!isEmailinputValid || !isPasswordInputValid}
+              disabled={isFormInavlid()}
             />
             <label
               className={
-                !isEmailinputValid || !isPasswordInputValid
-                  ? "disabled"
-                  : "undisabled"
+                email === "" || password === "" ? "disabled" : "undisabled"
               }
               htmlFor="student"
             >
@@ -123,13 +116,11 @@ const LoginForm = (props) => {
               id="professor"
               checked={role === "professor"}
               onChange={onRoleChange}
-              disabled={!isEmailinputValid || !isPasswordInputValid}
+              disabled={isFormInavlid()}
             />
             <label
               className={
-                !isEmailinputValid || !isPasswordInputValid
-                  ? "disabled"
-                  : "undisabled"
+                email === "" || password === "" ? "disabled" : "undisabled"
               }
               htmlFor="professor"
             >
@@ -141,7 +132,6 @@ const LoginForm = (props) => {
           <button type="submit" disabled={isFormInavlid()}>
             Submit
           </button>
-          {/* <div onClick={onClickSubscribe}>Subscribe</div> */}
         </div>
       </form>
     </div>

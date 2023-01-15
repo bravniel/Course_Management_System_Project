@@ -77,7 +77,7 @@ router.patch("/professors", auth, async (req, res) => {
     professor.address = updateProfessor.address || professor.address;
     professor.phoneNumber =
       updateProfessor.phoneNumber || professor.phoneNumber;
-    professor.email = updateProfessor.email;
+    professor.email = updateProfessor.email || professor.email;
 
     if (updateProfessor.password) {
       if (!updateProfessor.repeatPassword)
@@ -92,7 +92,7 @@ router.patch("/professors", auth, async (req, res) => {
     await professor.save();
     res.send(professor);
   } catch (e) {
-    e.name === "MongoError" && e.code === 11000
+     e.code === 11000
       ? res
           .status(500)
           .send({ Error: "This Email exists in the system, Email is unique" })
@@ -130,7 +130,7 @@ router.post("/students", auth, async (req, res) => {
     const students = await Student.find();
     res.send(students);
   } catch (e) {
-    e.name === "MongoError" && e.code === 11000
+    e.code === 11000
       ? res
           .status(500)
           .send({ Error: "This Email exists in the system, Email is unique" })

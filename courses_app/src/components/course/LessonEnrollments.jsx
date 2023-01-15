@@ -37,8 +37,8 @@ const LessonEnrollments = ({ date, lessonStudentsEnrollments, closeLessonEnrollm
       </div>
     </div>
   ) : (
-    <div className="private-message">
-      <div className="private-message__body">
+    <div className="modal-message">
+      <div className="modal__body">
         <div
           onClick={() => {
             closeLessonEnrollments();

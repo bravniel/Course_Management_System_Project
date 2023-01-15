@@ -1,308 +1,208 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
 import { loginAction } from "../../../actions/loginActions";
 import { editStudentInfo } from "../../../api/studentsAPI";
 import { LoginContext } from "../../../context/LoginContext";
-
+import {
+  editFormInitialState,
+  FormReducer,
+} from "../../../reducers/formReduser";
+import FormInput from "../../form/FormInput";
 
 const EditStudentForm = () => {
-    const { userData, dispatchUserData,isResponse } = useContext(LoginContext);
-    const phoneRegex = /^ [0][5][0 | 2 | 3 | 4 | 5 | 9]{ 1}[-]{ 0, 1 } [0 - 9]{ 7 } $ /;
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
-    
-  const [inputClasses, setInputClasses] = useState([
-    "input-valid",
-    "input-valid",
-    "input-valid",
-    "input-valid",
-    "input-valid",
-    "input-valid",
-    "input-valid",
-  ]);
-  const [invalidMessages, setInvalidMessages] = useState(["", "", "", "", "", "", ""]);
-  const [validInputs, setValidInputs] = useState([
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-  ]);
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [address, setAddress] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-const [repeatPassword, setRepeatPassword] = useState("");
+  const { userData, dispatchUserData } = useContext(LoginContext);
+  const [formState, dispatchForm] = useReducer(
+    FormReducer,
+    editFormInitialState
+  );
+  const [isEmailExists, setIsEmailExists] = useState(false);
+  const phoneRegex = /^[0][5][0|2|3|4|5|9]{1}[-]{0,1}[0-9]{7}$/;
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
+  const isTextValid = (value) => {
+    return value.length >= 3;
+  };
+  const isPhoneNumberValid = (value) => {
+    return phoneRegex.test(value);
+  };
+  const isEmailValid = (value) => {
+    return !!validator.isEmail(value);
+  };
+  const isPasswordValid = (value) => {
+    return passwordRegex.test(value);
+  };
+  const isPasswordRepeatValid = (value) => {
+    return value.toString() === formState.values.password.toString();
+  };
+
   const navigate = useNavigate();
-
-  const isFormInvalid = () => {
-    return validInputs.includes(false);
-  };
-
-  const validateInput = (
-    value,
-    inputindex,
-    isValueValidFunc,
-    setValue,
-    invalidValueMessage
-  ) => {
-    const setStateOfInputs = (message, inputClass, isvalidInput) => {
-      const newInavlidMessages = [...invalidMessages];
-      const newInputClasses = [...inputClasses];
-      const newValidInputs = [...validInputs];
-      newInavlidMessages[inputindex] = message;
-      setInvalidMessages(newInavlidMessages);
-      newInputClasses[inputindex] = inputClass;
-      setInputClasses(newInputClasses);
-      newValidInputs[inputindex] = isvalidInput;
-      setValidInputs(newValidInputs);
-    };
-
-    if (value.length > 0) {
-      if (isValueValidFunc(value)) {
-        setStateOfInputs("", "input-valid", true);
-        setValue(value);
-      } else {
-        setStateOfInputs(invalidValueMessage, "input-invalid", false);
-      }
-    } else {
-        setValue("");
-        setStateOfInputs("", "input-valid", true);
-    }
-  };
-
-  const onBlurFirstName = (event) => {
-    const newFirstName = event.target.value.trim();
-    const isFirstNamevalid = (value) => {
-      return value.length > 2;
-    };
-    validateInput(
-      newFirstName,
-      0,
-      isFirstNamevalid,
-      setFirstName,
-      "First name could not be shorter than 2 letters"
-    );
-    };
-
-    const onBlurLastName = (event) => {
-    const newLastName = event.target.value.trim();
-    const isLastNamevalid = (value) => {
-      return value.length > 2;
-    };
-    validateInput(
-      newLastName,
-      1,
-      isLastNamevalid,
-      setLastName,
-      "Last name could not be shorter than 2 letters"
-    );
-  };
-
-  const onBlurAddress = (event) => {
-    const newAddress = event.target.value.trim();
-    const isAddressValid = (value) => {
-      return value.length > 2;
-    };
-    validateInput(
-      newAddress,
-      2,
-      isAddressValid,
-      setAddress,
-      "Address could not be shorter than 2 letters"
-    );
-    };
-    
-    const onBlurPhoneNumber = (event) => {
-    const newPhoneNumber = event.target.value.trim();
-    const isPhoneNumberValid = (value) => {
-      return phoneRegex.test(value);
-    };
-    validateInput(
-      newPhoneNumber,
-      3,
-      isPhoneNumberValid,
-      setPhoneNumber,
-      "Phone number length invalid"
-    );
-  };
-
-  const onBlurEmail = (event) => {
-    const newEmail = event.target.value.trim();
-    validateInput(
-      newEmail,
-      4,
-      validator.isEmail,
-      setEmail,
-      "Email invalid"
-    );
-  };
-
-  const onBlurPassword = (event) => {
-    const newPassword = event.target.value.trim();
-    const isPasswordValid = (value) => {
-      return passwordRegex.test(value);
-    };
-    validateInput(
-      newPassword,
-      5,
-      isPasswordValid,
-      setPassword,
-      "Password must contain capital and regular characters, numbers and must have at least 6 characters"
-    );
-  };
-
-  const onBlurPasswordRepeated = (event) => {
-    const passwordRepeated = event.target.value.trim();
-    const isPasswordRepeatedValid = (value) => {
-      return password === passwordRepeated;
-    };
-    validateInput(
-      passwordRepeated,
-      6,
-      isPasswordRepeatedValid,
-      setRepeatPassword,
-      "The two passwords not identical"
-    );
-  };
-
 
   const onSubmitform = (event) => {
     event.preventDefault();
-    editStudentInfo(userData.token,{firstName,lastName,address,phoneNumber,email, password,repeatPassword}).then(
+    editStudentInfo(userData.token, formState.values).then(
       (newUserData) => {
-        dispatchUserData(loginAction({user:newUserData,isProfessor:userData.isProfessor,token:userData.token}));
+        dispatchUserData(
+          loginAction({
+            user: newUserData,
+            isProfessor: userData.isProfessor,
+            token: userData.token,
+          })
+        );
         alert("student data updated sucsesfuly");
         navigate("/home");
       },
-        (err) => {
-            console.log("err:")
-            console.log(err)
-        if (err.response.data.Error === "Duplicate student email") {
-          setInputClasses(["input-valid", "input-valid", "input-valid", "input-valid", "input-invalid", "input-valid", "input-valid"]);
-          setInvalidMessages(["", "", "", "", "Mail exist.", "", ""]);
-          setValidInputs([true,true,true, true, false, true, true]);
+      (err) => {
+        console.log("err:");
+        console.log(err);
+        if (
+          err.response.data.Error ===
+          "This Email exists in the system, Email is unique"
+        ) {
+          document.getElementById(
+            "editForm"
+          ).childNodes[5].childNodes[2].className = "input-invalid";
+          dispatchForm({
+            type: "EMAIL",
+            payload: { value: "", isValidInput: false },
+          });
+          setIsEmailExists(true);
+          // "Mail exist."
         }
       }
     );
   };
 
   const onClickClear = () => {
-    // props.setIsLoginMode(true);
-      document.getElementById("editForm").reset();
-    setInputClasses([
-    "input-valid",
-    "input-valid",
-    "input-valid",
-    "input-valid",
-    "input-valid",
-    "input-valid",
-    "input-valid",
-  ]);
-  setInvalidMessages(["", "", "", "", "", "", ""]);
-  setValidInputs([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-    };
+    document.getElementById("editForm").reset();
+    const invalidMessages = document.getElementsByClassName("invalid-message");
+    while (invalidMessages.length > 0) {
+      invalidMessages[0].parentNode.childNodes[2].className = "input-valid";
+      invalidMessages[0].parentNode.removeChild(invalidMessages[0]);
+    }
+  };
 
-    return (
-      <div className="login-page">
-      <div className="login-page__form">
-          <div className="login-form">
-      <div className="close-modal_btn" onClick={()=>{navigate("/home")}}>X</div>
-              <h3>Edit Profile</h3>
-      <form onSubmit={onSubmitform} id="editForm" >
-        <input
-          placeholder={userData.user.firstName}
-          className={inputClasses[0]}
-          onBlur={onBlurFirstName}
-        />
-        {invalidMessages[0] !== "" && (
-          <div className="invalid-message">{invalidMessages[0]}</div>
-              )}
-
-        <input
-          placeholder={userData.user.lastName}
-          className={inputClasses[1]}
-          onBlur={onBlurLastName}
-        />
-        {invalidMessages[1] !== "" && (
-          <div className="invalid-message">{invalidMessages[1]}</div>
-              )}
-
-        <input
-                      type="date"
-                     
-          value={userData?.user.birthDate.slice(0,10)}
-          disabled={true}
-              />
-              
-        <input
-          placeholder={userData.user.address}
-          className={inputClasses[2]}
-          onBlur={onBlurAddress}
-        />
-        {invalidMessages[2] !== "" && (
-          <div className="invalid-message">{invalidMessages[2]}</div>
-              )}
-              
-        <input
-          placeholder={userData.user.phoneNumber}
-          className={inputClasses[3]}
-          onBlur={onBlurPhoneNumber}
-        />
-        {invalidMessages[3] !== "" && (
-          <div className="invalid-message">{invalidMessages[3]}</div>
-              )}
-              
-        <input
-          placeholder={userData.user.email}
-          className={inputClasses[4]}
-          onBlur={onBlurEmail}
-        />
-        {invalidMessages[4] !== "" && (
-          <div className="invalid-message">{invalidMessages[4]}</div>
-        )}
-        <input
-          type="password"
-          placeholder="Password"
-          className={inputClasses[5]}
-          onBlur={onBlurPassword}
-        />
-        {invalidMessages[5] !== "" && (
-          <div className="invalid-message">{invalidMessages[5]}</div>
-        )}
-        <input
-          type="password"
-          placeholder="Repeat on password"
-          className={inputClasses[6]}
-          onBlur={onBlurPasswordRepeated}
-        />
-        {invalidMessages[6] !== "" && (
-          <div className="invalid-message">{invalidMessages[6]}</div>
-        )}
-              <input placeholder={userData.isProfessor ? "Role: Professor" : "Role: Student"} disabled={true} />
-        <div className="login-form__nav">
-          <button type="submit" disabled={isFormInvalid()}>
-            Update
-          </button>
-          <div onClick={onClickClear}>Clear</div>
-        </div>
-              </form>
-              </div>
-        </div>
+  return (
+    <div className="edit-page">
+      <div className="edit-page__form">
+        <div className="edit-form">
+          <div className="title">Edit Profile</div>
+          <form onSubmit={onSubmitform} id="editForm">
+            <FormInput
+              data={{
+                type: "text",
+                placeholder: userData.user.firstName,
+                label: "First Name",
+                name: "FIRST_NAME",
+                validationFunc: isTextValid,
+                invalidMessage:
+                  "First name could not be shorter than 2 letters",
+                isInputDisabledAttribute: false,
+                dispatchForm: dispatchForm,
+              }}
+            />
+            <FormInput
+              data={{
+                type: "text",
+                placeholder: userData.user.lastName,
+                label: "Last Name",
+                name: "LAST_NAME",
+                validationFunc: isTextValid,
+                invalidMessage: "Last name could not be shorter than 2 letters",
+                isInputDisabledAttribute: false,
+                dispatchForm: dispatchForm,
+              }}
+            />
+            <FormInput
+              data={{
+                type: "text",
+                placeholder: userData.user.birthDate.slice(0, 10),
+                label: "Birth date",
+                isInputDisabledAttribute: true,
+              }}
+            />
+            <FormInput
+              data={{
+                type: "text",
+                placeholder: userData.user.address,
+                label: "Address",
+                name: "ADDRESS",
+                validationFunc: isTextValid,
+                invalidMessage: "Address could not be shorter than 2 letters",
+                isInputDisabledAttribute: false,
+                dispatchForm: dispatchForm,
+              }}
+            />
+            <FormInput
+              data={{
+                type: "text",
+                placeholder: userData.user.phoneNumber,
+                label: "Phone Number",
+                name: "PHONE_NUMBER",
+                validationFunc: isPhoneNumberValid,
+                invalidMessage: "Phone number length invalid",
+                isInputDisabledAttribute: false,
+                dispatchForm: dispatchForm,
+              }}
+            />
+            <FormInput
+              data={{
+                type: "text",
+                placeholder: userData.user.email,
+                label: "Email",
+                name: "EMAIL",
+                validationFunc: isEmailValid,
+                invalidMessage: "Email invalid",
+                isInputDisabledAttribute: false,
+                dispatchForm: dispatchForm,
+              }}
+            />
+            <FormInput
+              data={{
+                type: "password",
+                placeholder: "password",
+                label: "Password",
+                name: "PASSWORD",
+                validationFunc: isPasswordValid,
+                invalidMessage:
+                  "Password must contain capital and regular characters, numbers and must have at least 6 characters",
+                isInputDisabledAttribute: false,
+                dispatchForm: dispatchForm,
+              }}
+            />
+            <FormInput
+              data={{
+                type: "password",
+                placeholder: "repeat password",
+                label: "Repeat Password",
+                name: "REPEAT_PASSWORD",
+                validationFunc: isPasswordRepeatValid,
+                invalidMessage: "The two passwords not identical",
+                isInputDisabledAttribute: false,
+                dispatchForm: dispatchForm,
+              }}
+            />
+            <FormInput
+              data={{
+                type: "text",
+                placeholder: userData.isProfessor ? "Professor" : "Student",
+                label: "Role",
+                isInputDisabledAttribute: true,
+              }}
+            />
+            {isEmailExists && (
+              <div className="invalid-message">Mail exist.</div>
+            )}
+            <div className="edit-form__nav">
+              <button type="submit" disabled={!formState.isFormValid}>
+                Update
+              </button>
+              <div onClick={onClickClear}>Clear</div>
             </div>
-    );
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default EditStudentForm;

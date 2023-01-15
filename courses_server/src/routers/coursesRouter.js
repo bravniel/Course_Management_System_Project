@@ -84,7 +84,7 @@ router.post("/courses", auth, async (req, res) => {
     await course.save();
     res.send({ course });
   } catch (e) {
-    e.name === "MongoError" && e.code === 11000
+    e.code === 11000
       ? res
           .status(500)
           .send({ Error: "This Name exists in the system, Name is unique" })

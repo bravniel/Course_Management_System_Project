@@ -29,10 +29,10 @@ const onClickDeleteCourse = () => {
   }
 
     return (
-      <div className="rooms__section">
+      <div className="page__section">
         <div>
           <h3>Course Name: {courseState.name}</h3>
-          <button onClick={onClickDeleteCourse} className="rooms__button-new">
+          <button onClick={onClickDeleteCourse} className="page__button-new">
             Delete course
           </button>
           <div>Registerd students:</div>
@@ -61,9 +61,6 @@ const onClickDeleteCourse = () => {
             <div className="no-students">All students are registered.</div>
           )}
         </div>
-        {/* <AddMessage
-        //addMessage={props.addMessage}
-        /> */}
       </div>
     );
 };

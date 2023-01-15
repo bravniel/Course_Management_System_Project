@@ -1,7 +1,7 @@
-.rooms {
+.pages {
     width: 80%;
-    min-height: calc(100vh - 4rem);
-    margin: 4rem auto 0;
+    min-height: calc(100vh - 3rem);
+    margin: 4rem auto 1rem;
     display: grid;
     grid-template-columns: 40% 60%;
     padding-top: 1rem;
@@ -10,18 +10,13 @@
         text-align: center;
         color: $myBlue;
     }
-
-    a {
-        text-decoration: none;
-        color: black;
-    }
 }
 
-.rooms__section {
+.pages__section {
     padding: 1rem;
 }
 
-.rooms__section-delete {
+.pages__section-delete {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -63,7 +58,7 @@
     }
 }
 
-.room {
+.page {
     margin: 1rem;
     padding: 0.5rem;
     text-align: center;
@@ -74,7 +69,7 @@
     }
 }
 
-.rooms__input-new {
+.courses__input-new {
     padding: 0.5rem;
     border-radius: 5px;
     width: 100%;
@@ -82,7 +77,7 @@
     outline: none;
     margin-bottom: 1rem;
 }
-.rooms__input-invalid-new{
+.courses__input-invalid-new{
 padding: 0.5rem;
     border-radius: 5px;
     width: 100%;
@@ -91,7 +86,7 @@ padding: 0.5rem;
     margin-bottom: 1rem;
 }
 
-.rooms__button-new {
+.courses__button-new {
     padding: 0.5rem;
     border-radius: 5px;
     color: white;
@@ -150,4 +145,85 @@ padding: 0.5rem;
     margin-left: 1rem;
     font-weight: 500;
     margin-bottom: 0.5rem;
+}
+
+.add-form {
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+        text-align: center;
+        color: $myBlue;
+    }
+
+        label {
+            display: block;
+            width: 100%;
+            margin-bottom: 0.5rem;
+    
+            input {
+                width: 100%;
+                padding: 0.5rem;
+                border-radius: 5px;
+    
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+
+        .edit-form__nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+    
+            button {
+                padding: 0.5rem;
+                background: $myBlue;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+    
+                &:disabled {
+                    background: #ccc;
+                    cursor: not-allowed;
+                }
+            }
+    
+            div {
+                font-size: 0.75rem;
+                align-self: flex-end;
+                text-decoration: underline;
+                color: $myBlue;
+    
+                &:hover {
+                    color: $myLightBlue;
+                    cursor: pointer;
+                }
+            }
+        }
+    
+        .input-valid {
+            border: 1px solid $myBlue;
+        }
+    
+        .input-invalid {
+            border: 1px solid $myRed;
+        }
+    
+        .invalid-message {
+            color: $myRed;
+            font-size: 0.75rem;
+        }
+}
+
+select {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    border-radius: 5px;
+    border: 1px solid $myBlue;
+    outline: none;
 }

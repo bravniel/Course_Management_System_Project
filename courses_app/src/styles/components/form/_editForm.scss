@@ -1,0 +1,99 @@
+.edit-page {
+    width: 100%;
+    min-height: calc(100vh - 3rem);
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-page__form {
+    width: 40%;
+    border: 2px solid $myBlue;
+    border-radius: 5px;
+    margin: 2rem;
+    padding: 1rem;
+}
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .title {
+        font-size: 2rem;
+        font-weight: 600;
+        text-align: center;
+        color: $myBlue;
+        text-decoration: underline;
+    }
+
+    label {
+        display: block;
+        width: 100%;
+        margin-bottom: 0.5rem;
+
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 5px;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+        .edit-form__nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+    
+            button {
+                    padding: 0.5rem;
+                    background: $myBlue;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+            
+                    &:disabled {
+                        background: #ccc;
+                        cursor: not-allowed;
+                    }
+                }
+
+            div {
+                font-size: 0.75rem;
+                align-self: flex-end;
+                text-decoration: underline;
+                color: $myBlue;
+    
+                &:hover {
+                    color: $myLightBlue;
+                    cursor: pointer;
+                }
+            }
+        }
+
+    .input-valid {
+        border: 1px solid $myBlue;
+    }
+    
+    .input-invalid {
+        border: 1px solid $myRed;
+    }
+    
+    .invalid-message {
+        color: $myRed;
+            font-size: 0.75rem;
+    }
+}
+
+.error-message {
+    color: $myRed;
+    background: #ccc;
+    border-radius: 5px;
+    padding: 0.5rem;
+    text-align: center;
+}

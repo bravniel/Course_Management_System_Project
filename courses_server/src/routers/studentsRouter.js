@@ -44,7 +44,7 @@ router.patch("/students", auth, async (req, res) => {
     await user.save();
     res.send(user);
   } catch (e) {
-    e.name === "MongoError" && e.code === 11000
+    e.code === 11000
       ? res
           .status(500)
           .send({ Error: "This Email exists in the system, Email is unique" })
