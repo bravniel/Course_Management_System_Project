@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const FormInput = ({data}) => {
+const FormInput = ({ data }) => {
   const {
     type,
     placeholder,
@@ -10,50 +10,84 @@ const FormInput = ({data}) => {
     invalidMessage,
     isInputDisabledAttribute,
     dispatchForm,
+    formState,
+    min,
+    max,
+    formType
   } = data;
-  
-  const [isInputValid, setIsInputValid] = useState(true);
-  
+  console.log("formType",formType);
+  const [isNoValue, setIsNoValue] = useState(false);
   const onChangeSetInput = (e) => {
     const inputValue = e.target.value;
     if (!validationFunc(inputValue.trim())) {
-      if (inputValue.length == 0) {
-        setIsInputValid(true);
-        dispatchForm({
-          type: name,
-          payload: { value: "", isValidInput: true },
-        });
-      } else {
-        setIsInputValid(false);
-        dispatchForm({
-          type: name,
-          payload: { value: "", isValidInput: false },
-        });
+      switch (formType) {
+        case "new": {
+          inputValue.trim().length == 0
+            ? setIsNoValue(true)
+            : setIsNoValue(false);
+          dispatchForm({
+            type: "SET",
+            payload: { type: name, value: "", isValidInput: false },
+          });
+          break;
+        }
+        case "edit": {
+          setIsNoValue(false);
+          if (inputValue.length == 0) {
+            dispatchForm({
+              type: "SET",
+              payload: { type: name, value: "", isValidInput: true },
+            });
+          } else {
+            dispatchForm({
+              type: "SET",
+              payload: { type: name, value: "", isValidInput: false },
+            });
+          }
+          break;
+        }
       }
     } else {
-      setIsInputValid(true);
       dispatchForm({
-        type: name,
-        payload: { value: inputValue.trim(), isValidInput: true },
+        type: "SET",
+        payload: { type: name, value: inputValue.trim(), isValidInput: true },
       });
     }
   };
 
-  return (
+  return !isInputDisabledAttribute ? (
     <>
       <label className={isInputDisabledAttribute ? "disabled" : "undisabled"}>
         {label}:
         <input
-          className={isInputValid ? "input-valid" : "input-invalid"}
+          className={formState.isValid[name] ? "input-valid" : "input-invalid"}
           onChange={onChangeSetInput}
           type={type}
           placeholder={placeholder}
           disabled={isInputDisabledAttribute}
           name={name}
+          min={min}
+          max={max}
         />
-        {!isInputValid && (
-          <div className="invalid-message">{invalidMessage}</div>
+        {!formState.isValid[name] && (
+          <div className="invalid-message">
+            {!isNoValue ? invalidMessage : "A value must be entered"}
+          </div>
         )}
+      </label>
+    </>
+  ) : (
+    <>
+      <label className={isInputDisabledAttribute ? "disabled" : "undisabled"}>
+        {label}:
+        <input
+          className="input-disabled"
+          type={type}
+          value={placeholder}
+          placeholder={placeholder}
+          disabled={isInputDisabledAttribute}
+          name={name}
+        />
       </label>
     </>
   );

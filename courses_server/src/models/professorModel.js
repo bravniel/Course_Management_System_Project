@@ -114,9 +114,13 @@ professorSchema.methods.generateAuthToken = async function () {
 
 professorSchema.methods.toJSON = function () {
   const user = this;
+  // const birthDate = new Date(user.birthDate).substring(0, 10);
   const userObj = user.toObject();
   delete userObj.password;
   delete userObj.tokens;
+  delete userObj._id;
+  delete userObj.__v;
+  // userObj.birthDate = birthDate;
   return userObj;
 };
 

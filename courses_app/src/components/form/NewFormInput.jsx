@@ -35,7 +35,7 @@ const NewFormInput = ({ data }) => {
   };
 
   return (
-    <>
+      <>
       <label>
         {label}:
         <input
@@ -45,7 +45,7 @@ const NewFormInput = ({ data }) => {
           placeholder={placeholder}
           disabled={isInputDisabledAttribute}
           name={name}
-          min={min}
+          min={min??new Date(0).toDateString()}
           max={max}
         />
         {!isInputValid && (

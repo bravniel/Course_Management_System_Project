@@ -79,9 +79,15 @@
     .input-valid {
         border: 1px solid $myBlue;
     }
-    
-    .input-invalid {
-        border: 1px solid $myRed;
+    .input-valid {
+        border: 1px solid $myBlue;
+    }
+    .input-disabled {
+        border: 1px solid $myGray;
+        color: $myLightGray;
+        &:hover {
+            cursor: not-allowed;
+        }
     }
     
     .invalid-message {

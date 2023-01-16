@@ -23,164 +23,27 @@ export const newStudentFormInitialState = {
 };
 
 export function NewStudentFormReducer(state, action) {
-  console.log(state);
-  console.log(action);
   switch (action.type) {
-    case "FIRST_NAME": {
-      const newValues = { ...state.values, firstName: action.payload.value };
-      console.log(newValues);
-      const newIsValid = {
-        ...state.isValid,
-        firstName: action.payload.isValidInput,
-      };
-      console.log(newIsValid);
+    case "SET": {
+      const newValues = { ...state.values };
+      newValues[action.payload.type] = action.payload.value;
+      const newIsValid = { ...state.isValid };
+      newIsValid[action.payload.type] = action.payload.isValidInput;
       const newIsFormValid = IsFormValid({
         isValid: { ...newIsValid },
         values: { ...newValues },
       });
-      console.log(newIsFormValid);
       return {
         isValid: { ...newIsValid },
         values: { ...newValues },
         isFormValid: newIsFormValid,
       };
     }
-    case "LAST_NAME": {
-      const newValues = { ...state.values, lastName: action.payload.value };
-      console.log(newValues);
-      const newIsValid = {
-        ...state.isValid,
-        lastName: action.payload.isValidInput,
-      };
-      console.log(newIsValid);
-      const newIsFormValid = IsFormValid({
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-      });
-      console.log(newIsFormValid);
-      return {
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-        isFormValid: newIsFormValid,
-      };
+    case "INIT": {
+      return { ...newStudentFormInitialState };
     }
-    case "BIRTH_DATE": {
-      const newValues = { ...state.values, birthDate: action.payload.value };
-      console.log(newValues);
-      const newIsValid = {
-        ...state.isValid,
-        birthDate: action.payload.isValidInput,
-      };
-      console.log(newIsValid);
-      const newIsFormValid = IsFormValid({
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-      });
-      console.log(newIsFormValid);
-      return {
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-        isFormValid: newIsFormValid,
-      };
-    }
-    case "ADDRESS": {
-      const newValues = { ...state.values, address: action.payload.value };
-      console.log(newValues);
-      const newIsValid = {
-        ...state.isValid,
-        address: action.payload.isValidInput,
-      };
-      console.log(newIsValid);
-      const newIsFormValid = IsFormValid({
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-      });
-      console.log(newIsFormValid);
-      return {
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-        isFormValid: newIsFormValid,
-      };
-    }
-    case "PHONE_NUMBER": {
-      const newValues = { ...state.values, phoneNumber: action.payload.value };
-      console.log(newValues);
-      const newIsValid = {
-        ...state.isValid,
-        phoneNumber: action.payload.isValidInput,
-      };
-      console.log(newIsValid);
-      const newIsFormValid = IsFormValid({
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-      });
-      console.log(newIsFormValid);
-      return {
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-        isFormValid: newIsFormValid,
-      };
-    }
-    case "EMAIL": {
-      const newValues = { ...state.values, email: action.payload.value };
-      console.log(newValues);
-      const newIsValid = {
-        ...state.isValid,
-        email: action.payload.isValidInput,
-      };
-      console.log(newIsValid);
-      const newIsFormValid = IsFormValid({
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-      });
-      console.log(newIsFormValid);
-      return {
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-        isFormValid: newIsFormValid,
-      };
-    }
-    case "PASSWORD": {
-      const newValues = { ...state.values, password: action.payload.value };
-      console.log(newValues);
-      const newIsValid = {
-        ...state.isValid,
-        password: action.payload.isValidInput,
-      };
-      console.log(newIsValid);
-      const newIsFormValid = IsFormValid({
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-      });
-      console.log(newIsFormValid);
-      return {
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-        isFormValid: newIsFormValid,
-      };
-    }
-    case "REPEAT_PASSWORD": {
-      const newValues = {
-        ...state.values,
-        repeatPassword: action.payload.value,
-      };
-      console.log(newValues);
-      const newIsValid = {
-        ...state.isValid,
-        repeatPassword: action.payload.isValidInput,
-      };
-      console.log(newIsValid);
-      const newIsFormValid = IsFormValid({
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-      });
-      console.log(newIsFormValid);
-      return {
-        isValid: { ...newIsValid },
-        values: { ...newValues },
-        isFormValid: newIsFormValid,
-      };
-    }
+    default:
+      return state;
   }
 }
 
