@@ -9,13 +9,10 @@ const LessonEnrollments = ({ date, lessonStudentsEnrollments, closeLessonEnrollm
   const dateDay = new Date(date);
   const thisDateSchedule = courseState.schedule.filter(el => el.day === days[dateDay.getDay()]);
   const currentDate = new Date();
-
-  console.log("lessonStudentsEnrollments");
-  console.log(lessonStudentsEnrollments);
   
   return lessonStudentsEnrollments? (
-    <div className="private-message">
-      <div className="private-message__body">
+    <div className="modal">
+      <div className="modal__body">
         <div
           onClick={() => {
             closeLessonEnrollments();
@@ -37,7 +34,7 @@ const LessonEnrollments = ({ date, lessonStudentsEnrollments, closeLessonEnrollm
       </div>
     </div>
   ) : (
-    <div className="modal-message">
+    <div className="modal">
       <div className="modal__body">
         <div
           onClick={() => {

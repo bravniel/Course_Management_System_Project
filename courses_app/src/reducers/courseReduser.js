@@ -1,5 +1,3 @@
-const { nanoid } = require("nanoid");
-
 export const initialcourseState = {
   isCourseExist: false,
     name: "",

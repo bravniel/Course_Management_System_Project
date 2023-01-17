@@ -63,9 +63,11 @@ const EditProffesorForm = () => {
     role: true,
   };
 
+  const newUserData = { ...userData.user };
+  delete newUserData._id;
+  newUserData.birthDate = newUserData.birthDate.slice(0, 10);
   const inputsProperties = {
-    ...userData.user,
-    birthDate: userData.user.birthDate.slice(0, 10),
+    ...newUserData,
     password: "password",
     repeatPassword: "repeat password",
     role: userData.isProfessor ? "professor" : "student",

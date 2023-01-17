@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { loginAction } from "../../actions/loginActions";
 import { loginToSite } from "../../api/generalAPI";
 import { LoginContext } from "../../context/LoginContext";
-import FormInput from "../form/FormInput";
 const LoginForm = (props) => {
   const { dispatchUserData } = useContext(LoginContext);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isEmailinputValid, setIsEmailInputValid] = useState(true);

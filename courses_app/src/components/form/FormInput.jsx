@@ -15,7 +15,6 @@ const FormInput = ({ data }) => {
     max,
     formType
   } = data;
-  console.log("formType",formType);
   const [isNoValue, setIsNoValue] = useState(false);
   const onChangeSetInput = (e) => {
     const inputValue = e.target.value;

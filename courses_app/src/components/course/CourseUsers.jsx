@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { deleteCourse } from "../../api/professorsAPI";
 import { CourseContext } from "../../context/CourseContext";
 import { LoginContext } from "../../context/LoginContext";
@@ -7,7 +7,6 @@ import NotRegisteredStudent from "./NotRegisteredStudent";
 import RegisteredStudent from "./RegisteredStudent";
 
 const CourseUsers = (props) => {
-    const { id } = useParams();
     const navigate = useNavigate();
     const { userData } = useContext(LoginContext);
     const { courseState } = useContext(CourseContext);
@@ -15,24 +14,16 @@ const CourseUsers = (props) => {
 const onClickDeleteCourse = () => {
    deleteCourse(userData.token, courseState.name).then(
       () => {
-        
         navigate("/courses");
-      },
-          (err) => {
-              console.log(err);
-        //   if (err.response.data.Error === "Duplicate course name") {
-        //     setIsNameInputInvalid(true);
-        //   setErrorMessage("Name already exist.");
-        // }
       }
     ); 
   }
 
     return (
-      <div className="page__section">
+      <div className="pages__section">
         <div>
           <h3>Course Name: {courseState.name}</h3>
-          <button onClick={onClickDeleteCourse} className="page__button-new">
+          <button onClick={onClickDeleteCourse}>
             Delete course
           </button>
           <div>Registerd students:</div>

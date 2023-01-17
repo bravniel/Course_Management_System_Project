@@ -3,9 +3,7 @@ import { useLocation } from "react-router-dom";
 import LoginForm from "./LoginForm";
 
 const LoginPage = (props) => {
-  const location = useLocation();
-  // const errorMessage = location.state?.needToLogin ? "You must to login!" : "";
-  
+  const location = useLocation();  
   const [isLoginMode, setIsLoginMode] = useState(true);
   const errorMessage = location.state?.needToLogin ? "You must to login!" : "";
 

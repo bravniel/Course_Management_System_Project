@@ -38,7 +38,7 @@ const CourseDates = (props) => {
   };
 
     return (
-      <div className="page__section">
+      <div className="pages__section">
         <h3>Dates</h3>
         {courseToDisplay.map((date) => (
           <div

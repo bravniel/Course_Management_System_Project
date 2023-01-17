@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { addRoomAction, setRoomsAction } from "../../actions/roomsActions";
-import { createNewCourse, getAllCourses } from "../../api/professorsAPI";
+import { setRoomsAction } from "../../actions/roomsActions";
 import { getStudentCourseInfo, getStudentCourses } from "../../api/studentsAPI";
 import { LoginContext } from "../../context/LoginContext";
-import roomsReducer, { initialRoomsState } from "../../reducers/roomsReducer";
+import roomsReducer from "../../reducers/roomsReducer";
 import Loader from "../main/Loader";
 import EditStudentClassStatus from "./EditStudentClassStatus";
 
@@ -12,12 +10,9 @@ const StudentCourses = () => {
     const { userData } = useContext(LoginContext);
     const [rooms, dispatcRooms] = useReducer(roomsReducer, []);
     const [isRoomLoaded, setIsRoomLoaded] = useState(false);
-    const currentDate = new Date();
-    const yesterday = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()-2);
-    
+    const currentDate = new Date();    
     const [courseInfo, setCourseInfo] = useState([]);
     const [courseName, setCourseName] = useState("");
-
     const [editStudentClassStatusForm, setEditStudentClassStatusForm] = useState(false);
     const [classStatus, setClassStatus] = useState(null);
 
@@ -37,7 +32,6 @@ const StudentCourses = () => {
     const getCourse = (courseName) => {
         setIsRoomLoaded(false);
         getStudentCourseInfo(userData.token, courseName).then((newAllStatuses) => {
-            console.log(newAllStatuses)
             setCourseInfo(newAllStatuses);
             setCourseName(courseName);
             setIsRoomLoaded(true);
@@ -51,9 +45,6 @@ const StudentCourses = () => {
 
     const isButtonDisabled = (value) => {
         const date = new Date(value);
-        console.log("currentDate: "+currentDate.getTime());
-        console.log("yesterday: "+yesterday.getTime());
-        console.log("date: "+date.getTime());
         return date.getTime() >= currentDate.getTime();
     }
     

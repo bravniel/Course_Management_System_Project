@@ -8,17 +8,26 @@ const Course = (props) => {
 
   const { courseState } = useContext(CourseContext);
   
-  return (
-    <div className="course-container">
-      {courseState.isCourseExist ? (
-        <div className="course">
-          <CourseDates/>
-          <CourseUsers/>
-        </div>
-      ) : (
-        <Loader />
-      )}
+  // return (
+  //   <div className="pages">
+  //     {courseState.isCourseExist ? (
+  //       <div className="pages">
+  //         <CourseDates />
+  //         <CourseUsers />
+  //       </div>
+  //     ) : (
+  //       <Loader />
+  //     )}
+  //   </div>
+  // );
+
+  return courseState.isCourseExist ? (
+    <div className="pages">
+      <CourseDates />
+      <CourseUsers />
     </div>
+  ) : (
+    <Loader />
   );
 };
 

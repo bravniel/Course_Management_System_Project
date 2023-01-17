@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
-import { useParams } from "react-router-dom";
 import { updateStudentClassAttendanceStatus } from "../../api/studentsAPI";
-import { CourseContext } from "../../context/CourseContext";
 import { LoginContext } from "../../context/LoginContext";
 
 const EditStudentClassStatus = ({ classStatus,courseName, closeEditStudentClassStatus,getCourse }) => {

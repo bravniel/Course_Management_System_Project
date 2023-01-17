@@ -1,24 +1,18 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { addRoomAction, setRoomsAction } from "../../actions/roomsActions";
+import { setRoomsAction } from "../../actions/roomsActions";
 import {
   addNewStudent,
-  createNewCourse,
   deleteStudent,
-  getAllCourses,
   getAllStudents,
 } from "../../api/professorsAPI";
 import { LoginContext } from "../../context/LoginContext";
-import roomsReducer, { initialRoomsState } from "../../reducers/roomsReducer";
+import roomsReducer from "../../reducers/roomsReducer";
 import Loader from "../main/Loader";
-import validator from "validator";
 import { newStudentFormInitialState, NewStudentFormReducer } from "../../reducers/newStudentReduser";
-import NewFormInput from "../form/NewFormInput";
 import Form from "../form/Form";
 
 const EditProfessorStudents = () => {
   const { userData } = useContext(LoginContext);
-  const [rooms, dispatcRooms] = useReducer(roomsReducer, []);
   const [isRoomLoaded, setIsRoomLoaded] = useState(false);
   const [allStudentsToDelete, dispatcAllStudentsToDelete] = useReducer(
     roomsReducer,
@@ -72,7 +66,6 @@ const EditProfessorStudents = () => {
       (newAllStudents) => {
         dispatcAllStudentsToDelete(setRoomsAction(newAllStudents));
         setStudentToDelete("All students...");
-        // onClickClear();
         document.getElementById("form").reset();
         setIsRoomLoaded(true);
       },
@@ -81,9 +74,9 @@ const EditProfessorStudents = () => {
           err.response.data.Error ===
           "This Email exists in the system, Email is unique"
         ) {
-          document.getElementById(
-            "editForm"
-          ).childNodes[5].childNodes[2].className = "input-invalid";
+          // document.getElementById(
+          //   "editForm"
+          // ).childNodes[5].childNodes[2].className = "input-invalid";
           dispatchForm({
             type: "SET",
             payload: { type: "email", value: "", isValidInput: false },

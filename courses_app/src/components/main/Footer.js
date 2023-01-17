@@ -10,9 +10,6 @@ const Footer = () => {
 
   return (
     <div className="footer">
-      {/* <a href="">About us</a>
-      <a href="">Conatct us</a> */}
-
       <a onClick={scrollToTop}>Back to top &#8679;</a>
     </div>
   );
