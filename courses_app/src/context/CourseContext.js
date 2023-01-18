@@ -9,34 +9,31 @@ export const CourseContext = createContext();
 
 const CourseContextProvider = (props) => {
   const { userData } = useContext(LoginContext);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [courseState, courseDispatch] = useReducer(
     courseReducer,
     initialcourseState
+  );
+
+  useEffect(() => {
+    let isComponentExist = true;
+    getCourseInfo(userData.token, props.roomId).then(
+      (courseData) => {
+        if (isComponentExist) {
+          courseDispatch(initCourseAction(courseData));
+        }
+      },
+      (err) => {
+        if (err.response.data.Error === "Course not found") {
+          navigate("/notfound");
+        }
+      }
     );
 
-    useEffect(() => {
-      let isComponentExist = true;
-      getCourseInfo(userData.token, props.roomId).then(
-        (courseData) => {
-          if (isComponentExist) {
-            courseDispatch(initCourseAction(courseData));
-          }
-        },
-        (err) => {
-          if (err.response.data.Error === "Course not found") {
-            navigate("/notfound");
-          }
-        }
-      );
-
-      return () => {
-        isComponentExist = false;
-      };
-    }, [
-      props.roomId,
-      userData.token
-    ]);
+    return () => {
+      isComponentExist = false;
+    };
+  }, [props.roomId, userData.token]);
 
   return (
     <CourseContext.Provider value={{ courseState, courseDispatch }}>

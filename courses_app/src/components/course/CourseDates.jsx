@@ -38,20 +38,22 @@ const CourseDates = (props) => {
   };
 
     return (
-      <div className="pages__section">
+      <div className="pages__section-delete">
         <h3>Dates</h3>
-        {courseToDisplay.map((date) => (
-          <div
-            className="user"
-            key={date}
-            onClick={() => {
-              getLessonStudentsEnrollments(date.substring(0, 10));
-              setDate(date.substring(0, 10));
-            }}
-          >
-            {date.substring(0, 10)}
-          </div>
-        ))}
+        <div className="chatroom__main__messages">
+          {courseToDisplay.map((date) => (
+            <div
+              className="user"
+              key={date}
+              onClick={() => {
+                getLessonStudentsEnrollments(date.substring(0, 10));
+                setDate(date.substring(0, 10));
+              }}
+            >
+              {date.substring(0, 10)}
+            </div>
+          ))}
+        </div>
         {!!lessonStudentsEnrollmentsForm && (
           <LessonEnrollments
             date={date}

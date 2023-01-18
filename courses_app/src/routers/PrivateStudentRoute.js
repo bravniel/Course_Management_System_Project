@@ -3,14 +3,13 @@ import { Navigate, Outlet } from "react-router-dom";
 import { LoginContext } from "../context/LoginContext";
 
 const PrivateStudentRoute = () => {
-    const { userData } = useContext(LoginContext);
-    console.log(userData)
-    return !!userData.user && !userData.isProfessor ? (
-      <Outlet />
-    ) : (
-       <Navigate to="/login" state= {{ needToLogin: true }}  />
-      // <Outlet />
-    );
+  const { userData } = useContext(LoginContext);
+  console.log(userData);
+  return !!userData.user && !userData.isProfessor ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" state={{ needToLogin: true }} />
+  );
 };
 
 export default PrivateStudentRoute;

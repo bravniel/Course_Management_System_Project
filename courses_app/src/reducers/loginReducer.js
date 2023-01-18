@@ -4,12 +4,10 @@ export const userDataInitialState = {
   token: "",
 };
 
-
-
 const loginReducer = (userData, action) => {
   switch (action.type) {
     case "LOGIN": {
-      return {...action.payload};
+      return { ...action.payload };
     }
     case "LOGOUT": {
       const newLoginState = { ...userData };

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { LoginContext } from "../../context/LoginContext";
 
 const Home = () => {

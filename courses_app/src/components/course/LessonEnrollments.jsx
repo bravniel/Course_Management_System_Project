@@ -10,7 +10,7 @@ const LessonEnrollments = ({ date, lessonStudentsEnrollments, closeLessonEnrollm
   const thisDateSchedule = courseState.schedule.filter(el => el.day === days[dateDay.getDay()]);
   const currentDate = new Date();
   
-  return lessonStudentsEnrollments? (
+  return lessonStudentsEnrollments ? (
     <div className="modal">
       <div className="modal__body">
         <div
@@ -21,16 +21,45 @@ const LessonEnrollments = ({ date, lessonStudentsEnrollments, closeLessonEnrollm
         >
           x
         </div>
-        <h4>Lesson Enrollments Statuses for {id} course date: {date} ( {days[dateDay.getDay()]}, {thisDateSchedule[0].hours.startHour} - {thisDateSchedule[0].hours.endHour} )</h4>
-      {lessonStudentsEnrollments.map((lessonStudentEnrollment, i) => (
-        <div key={i} className={i % 2 == 0 ? "my-message" : "message"}>
-          <p>
-            <u>{lessonStudentEnrollment.student.firstName + lessonStudentEnrollment.student.lastName}:</u>
-             {dateDay.getTime() > currentDate.getTime() ? (<span>Future course, not yet held</span>) : (<span className={!!lessonStudentEnrollment.statuses[0].presence ? "attend" : "absent"}>{!!lessonStudentEnrollment.statuses[0].presence ? "Attend" : "Absent"}</span>)}.<br />
-            {dateDay.getTime() < currentDate.getTime() && (lessonStudentEnrollment.statuses[0].absenceReason ? `Absence Reason: ${lessonStudentEnrollment.statuses[0].absenceReason}.` : "")}
-          </p>
+        <div className="course-date">
+          <h4>Lesson Enrollments Statuses for course: {id}</h4>
+          <h5>
+            ({days[dateDay.getDay()]}, {thisDateSchedule[0].hours.startHour} -{" "}
+            {thisDateSchedule[0].hours.endHour})
+          </h5>
         </div>
-          ))}
+        {lessonStudentsEnrollments.map((lessonStudentEnrollment, i) => (
+          <div key={i} className={i % 2 == 0 ? "my-message" : "message"}>
+            <p>
+              <u>
+                {lessonStudentEnrollment.student.firstName +
+                  " " +
+                  lessonStudentEnrollment.student.lastName}
+                :
+              </u>
+              {dateDay.getTime() > currentDate.getTime() ? (
+                <span> Future course, not yet held</span>
+              ) : (
+                <span
+                  className={
+                    !!lessonStudentEnrollment.statuses[0].presence
+                      ? "attend"
+                      : "absent"
+                  }
+                >
+                  {!!lessonStudentEnrollment.statuses[0].presence
+                    ? "Attend"
+                    : "Absent"}
+                </span>
+              )}
+              .<br />
+              {dateDay.getTime() < currentDate.getTime() &&
+                (lessonStudentEnrollment.statuses[0].absenceReason
+                  ? `Absence Reason: ${lessonStudentEnrollment.statuses[0].absenceReason}.`
+                  : "")}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   ) : (
@@ -44,8 +73,14 @@ const LessonEnrollments = ({ date, lessonStudentsEnrollments, closeLessonEnrollm
         >
           x
         </div>
-        <h4>Lesson Enrollments Statuses for {id} course date: {date} ( {days[dateDay.getDay()]}, {thisDateSchedule[0].hours.startHour} - {thisDateSchedule[0].hours.endHour} )</h4>
-        <div className="my-message">There are no registered students</div>
+        <div className="course-date">
+          <h4>Lesson Enrollments Statuses for course: {id}</h4>
+          <h5>
+            ({days[dateDay.getDay()]}, {thisDateSchedule[0].hours.startHour} -{" "}
+            {thisDateSchedule[0].hours.endHour})
+          </h5>
+        </div>
+        <div className="no-students">There are no registered students</div>
       </div>
     </div>
   );

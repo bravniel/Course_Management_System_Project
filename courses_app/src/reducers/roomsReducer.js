@@ -1,4 +1,3 @@
-
 const roomsReducer = (rooms, action) => {
   switch (action.type) {
     case "ADD_ROOM":

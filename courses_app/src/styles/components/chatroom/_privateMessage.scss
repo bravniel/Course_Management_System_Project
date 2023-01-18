@@ -23,6 +23,18 @@
     padding: 1rem;
     position: relative;
 
+    .course-date{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        h4,
+        h5{
+            margin: 0;
+        }
+    }
+
     textarea {
         width: 80%;
         resize: none;

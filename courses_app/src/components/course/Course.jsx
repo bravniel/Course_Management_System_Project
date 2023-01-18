@@ -7,19 +7,6 @@ import CourseUsers from "./CourseUsers";
 const Course = (props) => {
 
   const { courseState } = useContext(CourseContext);
-  
-  // return (
-  //   <div className="pages">
-  //     {courseState.isCourseExist ? (
-  //       <div className="pages">
-  //         <CourseDates />
-  //         <CourseUsers />
-  //       </div>
-  //     ) : (
-  //       <Loader />
-  //     )}
-  //   </div>
-  // );
 
   return courseState.isCourseExist ? (
     <div className="pages">

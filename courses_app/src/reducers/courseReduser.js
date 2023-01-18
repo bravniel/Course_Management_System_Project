@@ -1,9 +1,9 @@
 export const initialcourseState = {
   isCourseExist: false,
-    name: "",
-    startDate: "",
-    endDate:"",
-  schedule:[],
+  name: "",
+  startDate: "",
+  endDate: "",
+  schedule: [],
   dates: [],
   registeredStudents: [],
   newStudents: [],

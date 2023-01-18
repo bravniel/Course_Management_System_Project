@@ -18,24 +18,30 @@ export const editFormInitialState = {
     repeatPassword: true,
   },
   isFormValid: false,
-  
 };
 
 export function FormReducer(state, action) {
   switch (action.type) {
     case "SET": {
-      const newValues = { ...state.values};
+      const newValues = { ...state.values };
       newValues[action.payload.type] = action.payload.value;
-      const newIsValid = {...state.isValid};
+      const newIsValid = { ...state.isValid };
       newIsValid[action.payload.type] = action.payload.isValidInput;
-      const newIsFormValid = IsFormValid({isValid: {...newIsValid} ,values: {...newValues}});
-      return {isValid: {...newIsValid},values: {...newValues},isFormValid: newIsFormValid};
+      const newIsFormValid = IsFormValid({
+        isValid: { ...newIsValid },
+        values: { ...newValues },
+      });
+      return {
+        isValid: { ...newIsValid },
+        values: { ...newValues },
+        isFormValid: newIsFormValid,
+      };
     }
     case "INIT": {
-      return { ...editFormInitialState};
+      return { ...editFormInitialState };
     }
     default:
-      return state
+      return state;
   }
 }
 

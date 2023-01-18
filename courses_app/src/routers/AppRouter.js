@@ -51,7 +51,6 @@ const AppRouter = () => (
             <Route path="/student/courses" element={<StudentCourses />} />
             {/* <Route path="/student/course/:id" element={<CourseLoader />} /> */}
           </Route>
-          
         </Route>
 
         <Route element={<LoginRoute />}>

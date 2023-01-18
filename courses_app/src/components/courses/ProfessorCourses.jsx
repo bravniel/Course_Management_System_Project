@@ -119,7 +119,7 @@ const ProfessorCourses = () => {
         </div>
         {rooms.length > 0 &&
           rooms.map((room) => (
-            <div className="page" key={room.name}>
+            <div className="user" key={room.name}>
               <Link to={"/course/" + room.name}>{room.name}</Link>
             </div>
           ))}

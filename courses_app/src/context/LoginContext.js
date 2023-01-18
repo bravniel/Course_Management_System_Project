@@ -11,36 +11,40 @@ const LoginContextProvider = (props) => {
   const [isResponse, setIsResponse] = useState(false);
 
   const [userData, dispatchUserData] = useReducer(
-    loginReducer, userDataInitialState);
-  
+    loginReducer,
+    userDataInitialState
+  );
+
   const initAuthUser = async () => {
     try {
       if (!userData.user) {
         const userToken = localStorage.getItem("token");
-      if (userToken) {
-        const response = await getUserInfo(userToken);
-        if (!response.Error) {
-          setIsResponse(true);
-          return dispatchUserData(loginAction({
-            user: response.user,
-            isProfessor: response.isProfessor,
-            token: response.token,
-          }));
+        if (userToken) {
+          const response = await getUserInfo(userToken);
+          if (!response.Error) {
+            setIsResponse(true);
+            return dispatchUserData(
+              loginAction({
+                user: response.user,
+                isProfessor: response.isProfessor,
+                token: response.token,
+              })
+            );
+          } else {
+            setIsResponse(true);
+            return navigate("/login");
+          }
         } else {
           setIsResponse(true);
           return navigate("/login");
         }
-      } else {
-        setIsResponse(true);
-        return navigate("/login");
-      }
       }
       setIsResponse(true);
     } catch (error) {
       setIsResponse(true);
       return navigate("/login");
     }
-  }
+  };
   useEffect(() => {
     setIsResponse(false);
     initAuthUser();

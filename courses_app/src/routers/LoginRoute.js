@@ -4,13 +4,8 @@ import { LoginContext } from "../context/LoginContext";
 
 const LoginRoute = () => {
   const { userData } = useContext(LoginContext);
-console.log(userData)
-  return !!userData.user ? (
-    <Navigate to="/home" />
-    // <Outlet />
-  ) : (
-    <Outlet />
-  );
+  console.log(userData);
+  return !!userData.user ? <Navigate to="/home" /> : <Outlet />;
 };
 
 export default LoginRoute;

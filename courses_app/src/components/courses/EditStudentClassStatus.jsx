@@ -25,31 +25,47 @@ const EditStudentClassStatus = ({ classStatus,courseName, closeEditStudentClassS
         >
           x
         </div>
-        <h4>Lesson Status for {courseName} course date: {classStatus.classDate.substring(0, 10)}</h4>
-        <select className="input-valid" value={presence} onChange={(event) => {
-          const newPresence = event.target.value == "true"? true : false;
-          console.log(newPresence);
-          setPresence(newPresence);
-          if (newPresence) {
-            setIsCanUpdate(true)
-          } else {
-            setIsCanUpdate(classStatus.absenceReason.length > 0? true : false)
-            setAbsenceReason(classStatus.absenceReason);
-          }
-        }}>
-            <option value={true}>attend</option>
-            <option value={false}>absent</option>
+        <div className="course-date">
+          <h4>Lesson Status for course: {courseName}</h4>
+          <h5>({classStatus.classDate.substring(0, 10)})</h5>
+        </div>
+        <select
+          className="input-valid"
+          value={presence}
+          onChange={(event) => {
+            const newPresence = event.target.value == "true" ? true : false;
+            console.log(newPresence);
+            setPresence(newPresence);
+            if (newPresence) {
+              setIsCanUpdate(true);
+            } else {
+              setIsCanUpdate(
+                classStatus.absenceReason.length > 0 ? true : false
+              );
+              setAbsenceReason(classStatus.absenceReason);
+            }
+          }}
+        >
+          <option value={true}>attend</option>
+          <option value={false}>absent</option>
         </select>
-              {presence === false && (<textarea value={absenceReason} onChange={(event) => {
-                  const newAbsenceReason = event.target.value.trim();
-          setAbsenceReason(newAbsenceReason);
-          if (newAbsenceReason.length < 1) {
-            setIsCanUpdate(false)
-          } else {
-            setIsCanUpdate(true)
-          }
-        }}></textarea>)}
-        <button disabled={!isCanUpdate} onClick={updateStatus}>Send</button>
+        {presence === false && (
+          <textarea
+            value={absenceReason}
+            onChange={(event) => {
+              const newAbsenceReason = event.target.value.trim();
+              setAbsenceReason(newAbsenceReason);
+              if (newAbsenceReason.length < 1) {
+                setIsCanUpdate(false);
+              } else {
+                setIsCanUpdate(true);
+              }
+            }}
+          ></textarea>
+        )}
+        <button disabled={!isCanUpdate} onClick={updateStatus}>
+          Send
+        </button>
       </div>
     </div>
   );

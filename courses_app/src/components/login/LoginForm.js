@@ -43,7 +43,6 @@ const LoginForm = (props) => {
 
   const onSubmitform = (event) => {
     event.preventDefault();
-    console.log("login form:", email, password);
     loginToSite(email, password, role).then(
       (userData) => {
         dispatchUserData(loginAction(userData));

@@ -54,8 +54,8 @@ const CourseDay = ({ day, formState, dispatchForm }) => {
   return (
     <>
       <div className="courses__day-container">
-        <label className="undisabled">
-          <input type="checkbox" onChange={onChangeDay} value={day} />
+              <input type="checkbox" onChange={onChangeDay} id={day} value={day} />
+        <label className="undisabled" htmlFor={day}>
           {day}
         </label>
       </div>
